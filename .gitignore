@@ -1,0 +1,8 @@
+# backups and archives
+backups/
+*.zip
+*.7z
+
+# Windows shell clutter
+desktop.ini
+Thumbs.db
