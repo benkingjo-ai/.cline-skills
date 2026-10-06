@@ -1,6 +1,6 @@
 ---
 name: win-shell
-description: Integrate with the Windows shell — system tray icon with states, the Alt+Q global hotkey with RegisterHotKey plus a low-level keyboard-hook fallback, the single-instance named-mutex guard, toast notifications with an AppUserModelID (AUMID) registered under HKCU, autostart via Task Scheduler or the Run key, and borderless tool windows. Use whenever adding tray behaviour, global shortcuts, toasts, single-instance checks, autostart, or Windows-specific windowing.
+description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey with a hook fallback, single-instance mutex, AUMID toasts, autostart, borderless tool windows. Use when adding tray behaviour, global shortcuts, toasts or autostart.
 ---
 
 # Win32 Shell

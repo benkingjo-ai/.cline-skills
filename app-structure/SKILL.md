@@ -1,6 +1,6 @@
 ---
 name: app-structure
-description: Lay out a new Windows Python desktop app the way every project in this house is laid out — package folder names, which module owns which responsibility (config, theme, logger, credentials, settings, widgets, tray, notify, dialogs), and where docs/, tests/, tools/, icons/ and build files go. Use whenever creating or scaffolding a new project, adding a new module, or naming files, folders or entry points in a GUI/tray application.
+description: Lay out a new Windows Python desktop app the house way: package folder names, which module owns what, and where docs/, tests/, tools/ and icons/ go. Use when scaffolding a project, adding a module, or naming files or entry points.
 ---
 
 # Project Structure

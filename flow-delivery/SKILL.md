@@ -1,6 +1,6 @@
 ---
 name: flow-delivery
-description: Follow the house conventions for documentation, testing and release — README linking a single product doc, keep-a-changelog CHANGELOG with the version in config.py, docs/ARCHITECTURE.md module map, docs/plans and RELEASE notes, pytest tests kept GUI-free, tools/spike_*.py probes, verify/release_check scripts, and PyInstaller packaging with a .spec whose version resource matches APP_VERSION. Use whenever writing docs, tests, spikes, changelogs, or building and releasing an exe.
+description: House conventions for docs, tests, tools and packaging: README linking one product doc, keep-a-changelog, pytest tests kept GUI-free, tools/ probes, and PyInstaller one-file builds. Use when writing docs or tests, or building a release exe.
 ---
 
 # Docs, Testing & Packaging

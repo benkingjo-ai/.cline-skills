@@ -15,9 +15,9 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 53 |
-| RISK | 6 |
-| MISS | 1 |
+| ok | 55 |
+| RISK | 5 |
+| MISS | 0 |
 
 ## app-identity
 
@@ -67,7 +67,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 2 | Deploy the Apps Script web app and guard it with a token | trigger | | ok |
 | 3 | Keep the settings the same across two machines | trigger | | ok |
 | 4 | Store the sync token locally under APPDATA | no | code-persistence | ok |
-| 5 | Add a Login panel that registers url and token | no | ui-dialogs | MISS (desc claims the client Login panel) |
+| 5 | Add a Login panel that registers url and token | no | ui-dialogs | ok (Phase 6 removed the claim) |
 
 ## flow-delivery
 
@@ -125,7 +125,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 1 | What colour should the panel background be? | trigger | | ok |
 | 2 | Create theme.py with the house palette and fonts | trigger | | ok |
 | 3 | What padding should rows use? | trigger | | ok |
-| 4 | Implement a dialog that closes on Esc | no | ui-dialogs | RISK (desc says styling a dialog) |
+| 4 | Implement a dialog that closes on Esc | no | ui-dialogs | ok (Phase 6 dropped the word dialog) |
 | 5 | Make the tray icon 22 px | no | win-shell | ok |
 
 ## win-shell
@@ -140,9 +140,10 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 ## Notes
 
-- MISS: `code-sync` claims "the client's Login panel that registers url/token/user", which
-  request 5 for `code-sync` deliberately aims at `ui-dialogs`. Both descriptions will fire.
-- RISK rows are over-broad descriptions, not broken ones. Each is a candidate for rule 6
-  (shorten the description) in Phase 6.
-- Re-judge this file after every description change in Phase 6, and revert any change that
-  turns an `ok` into a `RISK` or `MISS`.
+- No MISS remains. `code-sync` used to claim the client's Login panel, so request 5 fired
+  both it and `ui-dialogs`; the Phase 6 rewrite removed that claim.
+- The remaining RISK rows are inherent to the subject matter - docs/CHANGELOG ownership,
+  tray artwork versus tray behaviour, and the default level firing unprompted - and are not
+  fixable by rewording.
+- Re-judge this file after every description change, and revert any change that turns an
+  `ok` into a `RISK` or `MISS`.

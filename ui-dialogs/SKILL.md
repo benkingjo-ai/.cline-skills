@@ -1,6 +1,6 @@
 ---
 name: ui-dialogs
-description: Build the shared borderless dialog shell and the Login panel protocol, plus the auto-hide behaviour for trays, panels and popups — borderless always-on-top tool windows, header with red ✕, Esc to cancel, Load→Close single button, one status line per part, background connection test, 3-second auto-close after a verified load, and the 3/10/30/60/Never inactivity choices. Use whenever creating a dialog, a login/credential panel, a settings window, or adding auto-hide / timeout behaviour.
+description: Build the borderless dialog shell, the Login panel protocol and auto-hide: always-on-top windows, red ✕ header, Esc cancels, a status line per part, connection test, 3-second auto-close. Use when creating a dialog or login panel.
 ---
 
 # Dialogs — Shell, Login, Auto-hide

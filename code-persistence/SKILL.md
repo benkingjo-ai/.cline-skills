@@ -1,6 +1,6 @@
 ---
 name: code-persistence
-description: Store settings, credentials and logs the house way — a rotating %APPDATA% file logger that never raises, settings.ini written with configparser keeping unknown keys and falling back to environment variables, the tolerant credentials file parser accepting $url = "..." or name = value with aliases, read-only handling of the user's file, and secret hygiene (SECRET_PATTERNS, logging field names never values). Use whenever persisting config, reading secrets, writing a logger, or handling credentials or API keys.
+description: Store settings, credentials and logs: a rotating %APPDATA% logger that never raises, merged settings.ini, a tolerant credentials parser, secret hygiene (names, never values). Use when persisting config, reading secrets or handling API keys.
 ---
 
 # Persistence & Logging

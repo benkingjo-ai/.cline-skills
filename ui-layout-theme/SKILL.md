@@ -1,6 +1,6 @@
 ---
 name: ui-layout-theme
-description: Apply the house dark-theme design system to any GUI — the exact colour palette (backgrounds, panels, text, accent, error, close, primary button, progress bar), the Calibri font family and its sizes, and the shared layout metrics (padding, button widths, header heights, window alpha). Use whenever styling a window, panel, dialog or button, choosing colours or font sizes, creating a theme.py, or building a progress bar or form layout.
+description: Apply the house dark theme: colour palette, Calibri fonts, and the shared layout metrics (padding, button widths, header heights, window alpha). Use when styling a window, panel or button, choosing colours or fonts, or creating theme.py.
 ---
 
 # Layout — Colour, Font, Size

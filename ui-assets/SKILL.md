@@ -1,6 +1,6 @@
 ---
 name: ui-assets
-description: Build buttons, icon glyphs and system-tray artwork the house way — the red ✕ CloseButton, flat/primary buttons, the spinning refresh control with its baked frames, tray state icons with tinted badges, app icon files, and the standard Unicode symbols (✓ check, ✕ close, en dash). Use whenever drawing a close button, an icon button, a refresh/spinner control, tray icons or badges, or choosing button symbols and glyph characters.
+description: Build buttons, icons and tray artwork: the red ✕ CloseButton, flat and primary buttons, the baked-frame refresh spinner, tray state icons with badges, app icons, and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
 ---
 
 # Assets — Buttons, Icons, Symbols

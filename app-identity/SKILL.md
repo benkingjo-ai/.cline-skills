@@ -1,6 +1,6 @@
 ---
 name: app-identity
-description: Define a project's identity and data paths — the APP_NAME / APP_ID split, APP_VERSION living in one place, the VENDOR / TRADEMARK / COPYRIGHT block, resolving PROJECT_ROOT, the %APPDATA%\<APP_ID> rule for all user data and secrets, and _MEIPASS-aware resource paths. Use whenever naming an app, setting a version, creating config.py, computing file paths, or deciding where logs, settings and credentials are stored.
+description: Set a project's identity and paths: APP_NAME/APP_ID, one APP_VERSION, vendor block, PROJECT_ROOT, %APPDATA% user data, _MEIPASS resources. Use when naming an app, setting a version, writing config.py, or placing logs and credentials.
 ---
 
 # App Identity & Paths

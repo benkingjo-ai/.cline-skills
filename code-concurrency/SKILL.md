@@ -1,6 +1,6 @@
 ---
 name: code-concurrency
-description: Run slow work off the GUI thread safely — a daemon worker thread that only records its result, a GUI-side poller (Tk after() or QTimer) that collects it, bounded timeouts and retry caps, timers that never outlive their widget, and GUI-only updates. Use whenever adding a network call, file picker result, background refresh, spinner, or anything that must not block or corrupt the UI.
+description: Run slow work off the GUI thread: a daemon worker that only records its result, a GUI poller that collects it, bounded timeouts, timers tied to the widget. Use when adding a network call, refresh or spinner that must not block the UI.
 ---
 
 # Concurrency Discipline
