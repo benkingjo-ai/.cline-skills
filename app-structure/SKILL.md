@@ -48,7 +48,7 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
 
 | Folder | Contents |
 |---|---|
-| `docs/` | `<App>.md` (single product doc), `ARCHITECTURE.md`, `plans/*.md`, `RELEASE-x.y.z.md`, `Code.gs`, `*.skill` - contents conventions owned by the `flow-delivery` skill |
+| `docs/` | `<App>.md` (single product doc), `ARCHITECTURE.md`, `plans/*.md`, `RELEASE-x.y.z.md`, `Code.gs` - contents conventions owned by the `flow-delivery` skill |
 | `tests/` | `test_*.py` (pytest) |
 | `tools/` | `spike_*.py`, `verify_app.py`, `release_check.py`, `make_icons.py`, `drive_*.py` - conventions owned by the `flow-delivery` skill |
 | `icons/` or `assets/app`, `assets/icons` | shipped `.ico` / `.png` |

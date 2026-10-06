@@ -18,7 +18,9 @@ description: House conventions for docs, tests, tools and packaging: README link
 | `docs/plans/*.md` | feature plans, one per feature |
 | `docs/RELEASE-x.y.z.md` | artefact checksum, restore recipes, everything deliberately outside Git |
 | `docs/Code.gs` | the Apps Script to paste into the sheet (see `code-sync`) |
-| `docs/*.skill` | bundled skills (folder with `SKILL.md` + `references/`) |
+
+Skills never live in a project: a skill belongs in the global library (see the `skill-authoring`
+skill). Do not keep a `*.skill` bundle, a `SKILL.md` or a `references/` folder under `docs/`.
 
 Voice: describe **behaviour and the reason for it**; cite the spec/manual section it comes
 from (e.g. *"manual 11.1"*, *"Sheets spec 14.3"*).

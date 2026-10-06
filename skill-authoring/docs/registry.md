@@ -13,10 +13,10 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `APP_VERSION` | app-identity | SKILL.md | flow-levels, flow-delivery |
 | `%APPDATA%` | app-identity | SKILL.md | code-persistence, code-sync, ui-assets |
 | `resource_path()` | app-identity | SKILL.md | ui-assets |
-| `Colour tokens` | ui-layout-theme | SKILL.md | ui-assets, win-shell, ui-dialogs |
+| `Colour tokens` | ui-layout-theme | SKILL.md | ui-assets, win-shell, ui-dialogs, ui-tray-animation |
 | `Fonts` | ui-layout-theme | SKILL.md | - |
 | `Layout metrics` | ui-layout-theme | SKILL.md | ui-assets, ui-dialogs |
-| `Tray icons` | ui-assets | SKILL.md | win-shell |
+| `Tray icons` | ui-assets | SKILL.md | win-shell, ui-tray-animation |
 | `Refresh spinner` | ui-assets | SKILL.md | - |
 | `Symbols` | ui-assets | SKILL.md | - |
 | `The dialog shell` | ui-dialogs | SKILL.md | - |
@@ -35,7 +35,7 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `PyInstaller` | flow-delivery | SKILL.md | flow-levels |
 | `Naming convention` | skill-authoring | SKILL.md | all skills |
 | `Completion gate` | skill-authoring | SKILL.md | all skills |
-| `State colours` | win-shell | SKILL.md | ui-assets |
+| `State colours` | win-shell | SKILL.md | ui-assets, ui-tray-animation |
 | `Autostart` | win-shell | SKILL.md | app-identity |
 <!-- registry:end -->
 
