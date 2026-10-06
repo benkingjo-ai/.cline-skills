@@ -60,6 +60,10 @@ panel matches"*. Copy them verbatim; centralise them in `theme.py` (or `config.p
 | `BAR_HEIGHT` / `BAR_BORDER` / `BAR_MIN_WIDTH` | 13 / 1 / 60 px |
 | `LOGIN_CLOSE_S` | 3 s | login auto-close delay, owned by the `ui-dialogs` skill |
 
+Size ownership: the `ICON_BTN` / `REFRESH_BTN` values above are the button *boxes*. The
+refresh *glyph* inside is derived by the `ui-assets` skill (icon size x 0.85, so
+`BAR_ICON_PX` 22 gives 19 px). This file owns the boxes; `ui-assets` owns the glyph.
+
 ## Code
 
 Tk — put in `theme.py` / `config.py` and read it everywhere:

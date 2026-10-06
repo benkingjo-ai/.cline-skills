@@ -39,15 +39,14 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Autostart` | win-shell | SKILL.md | app-identity |
 <!-- registry:end -->
 
-## Flags - two owners
+## Flags
 
-| rule | owners | problem |
+All resolved in the owner pass:
+
+| rule | now owned by | was |
 |---|---|---|
-| Login panel | `ui-dialogs` (owner) and `code-sync`, whose description claims "the client's Login panel that registers url/token/user" | one request fires both - this is the MISS recorded in tests.md |
-| Tray state vocabulary and colours | `ui-assets` describes the states, `win-shell` describes the states, `ui-layout-theme` owns the values | three-way; only `ui-layout-theme` may define colour values |
+| Login panel | `ui-dialogs` | `code-sync` claimed it in its description, so one request fired both skills - the MISS in tests.md. The claim was removed. |
+| Tray state vocabulary and colours | `win-shell` (states), `ui-layout-theme` (values) | three-way: `ui-assets` and `win-shell` both described the states. `ui-assets` now points at both instead of defining them. |
+| Refresh glyph size | `ui-layout-theme` (button boxes), `ui-assets` (glyph) | no owner. The relationship (`BAR_ICON_PX` 22 gives a 19 px glyph) is now stated in `ui-layout-theme`. |
 
-## Flags - no owner
-
-| rule | problem |
-|---|---|
-| Refresh glyph size | `ui-layout-theme` lists `REFRESH_BTN` 12 px, while `ui-assets` derives 19 px from `BAR_ICON_PX 22 x 0.85`. No file owns the relationship between the two numbers. |
+No rule in this registry is currently unowned, and none has two owners.
