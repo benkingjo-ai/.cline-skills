@@ -157,7 +157,8 @@ function Get-FolderTokens {
     if (-not $sum) { return 0 }
     return [int][math]::Ceiling($sum / 4.0)
 }
-$skillDirs = @(Get-ChildItem -LiteralPath $SkillsDir -Directory | Sort-Object Name)
+$skillDirs = @(Get-ChildItem -LiteralPath $SkillsDir -Directory |
+    Where-Object { $_.Name -notlike '.*' } | Sort-Object Name)
 $failed        = 0
 $descWords     = @{}
 $descTokensMap = @{}
