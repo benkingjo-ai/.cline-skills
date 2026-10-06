@@ -5,7 +5,7 @@ Decide by how often the text is read, then by length.
 | If the text is... | Put it in | Why | Example |
 |---|---|---|---|
 | always needed, and only a few lines | a global Cline rule | read on every task, so keep it tiny | `rules/skills-governance.md` (14 lines) |
-| a situational procedure | a skill's SKILL.md | read only when that skill triggers | the `flow-commit` step table |
+| a situational procedure | a skill's SKILL.md | read only when that skill triggers | the `flow-levels` commit step table |
 | long, and shared by several skills | the owner skill's `docs\` file | on-demand; read only when something needs it | `skill-authoring\docs\naming.md` |
 | secret or confidential | never in the skills folder | skills are global and may be shared | an API token - keep it in `%APPDATA%` |
 

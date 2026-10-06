@@ -10,7 +10,7 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | rule (literal anchor) | owner | file | referenced by |
 |---|---|---|---|
 | `MUTEX_NAME` | app-identity | SKILL.md | win-shell |
-| `APP_VERSION` | app-identity | SKILL.md | flow-release, flow-delivery |
+| `APP_VERSION` | app-identity | SKILL.md | flow-levels, flow-delivery |
 | `%APPDATA%` | app-identity | SKILL.md | code-persistence, code-sync, ui-assets |
 | `resource_path()` | app-identity | SKILL.md | ui-assets |
 | `Colour tokens` | ui-layout-theme | SKILL.md | ui-assets, win-shell, ui-dialogs |
@@ -27,12 +27,12 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Spinner while in flight` | code-concurrency | SKILL.md | - |
 | `Credentials file parser` | code-persistence | SKILL.md | code-sync, ui-dialogs |
 | `Secret hygiene` | code-persistence | SKILL.md | ui-dialogs, code-sync |
-| `The four levels` | flow-baseline | SKILL.md | flow-optimize, flow-commit, flow-release |
-| `Clear cache set` | flow-baseline | SKILL.md | flow-optimize, flow-commit |
+| `The four levels` | flow-levels | SKILL.md | - |
+| `Clear cache set` | flow-levels | SKILL.md | - |
 | `Package (lowercase = app name)` | app-structure | SKILL.md | flow-delivery |
 | `Documentation` | flow-delivery | SKILL.md | app-structure, win-shell |
 | `Testing` | flow-delivery | SKILL.md | win-shell |
-| `PyInstaller` | flow-delivery | SKILL.md | flow-release |
+| `PyInstaller` | flow-delivery | SKILL.md | flow-levels |
 | `Naming convention` | skill-authoring | SKILL.md | all skills |
 | `Completion gate` | skill-authoring | SKILL.md | all skills |
 | `State colours` | win-shell | SKILL.md | ui-assets |

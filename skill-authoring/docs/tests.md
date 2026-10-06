@@ -15,8 +15,8 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 65 |
-| RISK | 9 |
+| ok | 53 |
+| RISK | 6 |
 | MISS | 1 |
 
 ## app-identity
@@ -69,26 +69,6 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 4 | Store the sync token locally under APPDATA | no | code-persistence | ok |
 | 5 | Add a Login panel that registers url and token | no | ui-dialogs | MISS (desc claims the client Login panel) |
 
-## flow-baseline
-
-| # | request | expected | near-miss of | verdict |
-|---|---|---|---|---|
-| 1 | Fix the null check in the parser | trigger | | RISK (default level may not fire unprompted) |
-| 2 | Rename this variable and update the callers | trigger | | RISK (same) |
-| 3 | Use the normal level for this change | trigger | | ok |
-| 4 | commit | no | flow-commit | ok |
-| 5 | Run the full suite, update the changelog, then commit | no | flow-commit | ok |
-
-## flow-commit
-
-| # | request | expected | near-miss of | verdict |
-|---|---|---|---|---|
-| 1 | commit | trigger | | ok |
-| 2 | commit this and update the changelog | trigger | | ok |
-| 3 | Wrap up the work and commit it | trigger | | ok |
-| 4 | release | no | flow-release | ok |
-| 5 | optimize | no | flow-optimize | ok |
-
 ## flow-delivery
 
 | # | request | expected | near-miss of | verdict |
@@ -99,26 +79,15 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 4 | Where should the docs folder sit in the project? | no | app-structure | RISK (desc covers docs/ contents) |
 | 5 | Where does the app keep its settings.ini? | no | code-persistence | ok |
 
-## flow-optimize
+## flow-levels
 
 | # | request | expected | near-miss of | verdict |
 |---|---|---|---|---|
-| 1 | Optimize this loop, it is slow | trigger | | ok |
-| 2 | Do a cleanup pass on this module | trigger | | ok |
-| 3 | Speed up the refresh, no docs and no commit | trigger | | ok |
-| 4 | Commit the cleanup | no | flow-commit | RISK (desc says cleanup pass) |
-| 5 | Profile it and then produce a release build | no | flow-release | ok |
-
-## flow-release
-
-| # | request | expected | near-miss of | verdict |
-|---|---|---|---|---|
-| 1 | release | trigger | | ok |
-| 2 | /release 1.4.2 | trigger | | ok |
-| 3 | Build the distributable for a release | trigger | | RISK (flow-delivery also claims exe builds) |
-| 4 | commit | no | flow-commit | ok |
-| 5 | Optimize the caching, no build | no | flow-optimize | ok |
-
+| 1 | Fix the null check in the parser, no level named | trigger | | RISK (default level may not fire unprompted) |
+| 2 | commit | trigger | | ok |
+| 3 | Optimize this loop, it is slow | trigger | | ok |
+| 4 | Write the CHANGELOG entry for this version | no | flow-delivery | ok |
+| 5 | Add a system tray icon with states | no | win-shell | ok |
 ## skill-authoring
 
 | # | request | expected | near-miss of | verdict |
