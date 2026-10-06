@@ -1,26 +1,27 @@
 <#
 .SYNOPSIS
-  Sets up the skills library on a new PC.
+  Finishes skills setup on a PC where link-cline-skills.bat has already run.
 
 .DESCRIPTION
-  Links $env:USERPROFILE\.cline\skills to the skills folder kept in OneDrive, installs the
-  pre-commit hook, runs the skills check, and prints the Cline settings that still have to
-  be set by hand.
+  Verifies that the junction $env:USERPROFILE\.cline\skills points at this skills folder,
+  installs the pre-commit hook, runs check.bat, and prints the Cline settings that still
+  have to be set by hand.
+
+  The junction is created by link-cline-skills.bat in the .cline folder. This script never
+  creates, moves or edits it - it only verifies it.
 
   No username is hard-coded: every path is derived from $env:USERPROFILE or from -SkillsPath.
 
-  The junction is REFUSED when $env:USERPROFILE\.cline\skills already exists as a real
-  folder, because linking over it would hide the skills Cline is already using.
-
 .PARAMETER SkillsPath
-  The skills folder to link to. The office PC path is:
+  The folder the junction is expected to point at. Defaults to the folder this script lives
+  in. The office PC junction points at:
     "$env:USERPROFILE\OneDrive - <tenant>\01 Documents\Github Projects\.cline\skills"
 
 .PARAMETER DryRun
   Print every action without changing anything.
 
 .EXAMPLE
-  powershell -NoProfile -File bootstrap.ps1 -DryRun -SkillsPath "$env:USERPROFILE\OneDrive - <tenant>\01 Documents\Github Projects\.cline\skills"
+  powershell -NoProfile -File bootstrap.ps1 -DryRun
 #>
 [CmdletBinding()]
 param(
@@ -32,55 +33,61 @@ $ErrorActionPreference = 'Stop'
 
 $RepoRoot    = $PSScriptRoot
 $LinkPath    = Join-Path $env:USERPROFILE '.cline\skills'
-$LinkParent  = Join-Path $env:USERPROFILE '.cline'
 $CheckBat    = Join-Path $RepoRoot 'check.bat'
 $InstallHook = Join-Path $RepoRoot 'skill-authoring\scripts\install-hook.ps1'
 $RulePath    = Join-Path $RepoRoot 'skill-authoring\docs\skills-governance-rule.md'
 
-Write-Output '== skills bootstrap =='
-Write-Output "repo root : $RepoRoot"
-Write-Output "link path : $LinkPath"
-Write-Output "target    : $(if ($SkillsPath) { $SkillsPath } else { '<not given>' })"
-Write-Output "dry run   : $([bool]$DryRun)"
+if ([string]::IsNullOrWhiteSpace($SkillsPath)) { $SkillsPath = $RepoRoot }
+$SkillsPath = [System.IO.Path]::GetFullPath($SkillsPath)
+
+Write-Output '== skills bootstrap (run after link-cline-skills.bat) =='
+Write-Output "this folder : $RepoRoot"
+Write-Output "junction    : $LinkPath"
+Write-Output "expected at : $SkillsPath"
+Write-Output "dry run     : $([bool]$DryRun)"
 Write-Output ''
 
-if ([string]::IsNullOrWhiteSpace($SkillsPath)) {
-    Write-Output 'ERROR: -SkillsPath is required.'
-    Write-Output ''
-    Write-Output 'Pass the skills folder kept in OneDrive. Office PC example:'
-    Write-Output '  -SkillsPath "$env:USERPROFILE\OneDrive - <tenant>\01 Documents\Github Projects\.cline\skills"'
-    throw 'missing -SkillsPath'
-}
-
-$SkillsPath = [System.IO.Path]::GetFullPath($SkillsPath)
-if (-not (Test-Path -LiteralPath $SkillsPath)) { throw "skills folder not found: $SkillsPath" }
+Write-Output '== 1. verify the junction (owned by link-cline-skills.bat) =='
 if (-not (Test-Path -LiteralPath (Join-Path $SkillsPath 'skill-authoring\SKILL.md'))) {
-    throw "does not look like a skills folder (no skill-authoring\SKILL.md): $SkillsPath"
+    throw "not a skills folder (no skill-authoring\SKILL.md): $SkillsPath"
 }
 
-Write-Output '== 1. junction =='
-$existing = Get-Item -LiteralPath $LinkPath -Force -ErrorAction SilentlyContinue
-if ($existing) {
-    $isLink = ($existing.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0
-    if (-not $isLink) {
-        Write-Output "REFUSING: $LinkPath exists and is a REAL folder, not a link."
-        Write-Output 'Move or rename it first - linking over it would hide the skills Cline is using.'
-        throw 'real folder in the way'
+$link = Get-Item -LiteralPath $LinkPath -Force -ErrorAction SilentlyContinue
+if (-not $link) {
+    throw "no junction at $LinkPath - run link-cline-skills.bat in the .cline folder first"
+}
+$isLink = ($link.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0
+if (-not $isLink) {
+    throw "$LinkPath exists but is a REAL folder, not a junction - the skills would not track this repo"
+}
+
+# Resolve a path through any reparse points so a junction alias and its real target
+# compare equal. Without this, running the script via the junction reports a false mismatch.
+function Get-RealPath {
+    param([string]$Path)
+    $p = $Path
+    for ($i = 0; $i -lt 8; $i++) {
+        $it = Get-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue
+        if (-not $it) { return $p }
+        $isRp = ($it.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0
+        $tgt  = [string]@($it.Target)[0]
+        if ($isRp -and $tgt) { $p = $tgt; continue }
+        return $it.FullName
     }
-    $current = @($existing.Target)[0]
-    Write-Output "link already exists -> $current"
-    if ($current -ne $SkillsPath) { throw "link points elsewhere: $current" }
-    Write-Output 'link target matches - left alone'
+    return $p
 }
-elseif ($DryRun) {
-    Write-Output "[dry-run] would create $LinkParent if missing"
-    Write-Output "[dry-run] would create the junction $LinkPath -> $SkillsPath"
+
+$target = [string]@($link.Target)[0]
+Write-Output "junction exists -> $target"
+
+$normTarget = (Get-RealPath $LinkPath).TrimEnd('\')
+$normWant   = (Get-RealPath $SkillsPath).TrimEnd('\')
+if ($normTarget -ne $normWant) {
+    Write-Output "MISMATCH - the junction points at: $normTarget"
+    Write-Output "but this repo is:                    $normWant"
+    throw 'junction points at a different folder'
 }
-else {
-    if (-not (Test-Path -LiteralPath $LinkParent)) { New-Item -ItemType Directory -Force -Path $LinkParent | Out-Null }
-    New-Item -ItemType Junction -Path $LinkPath -Target $SkillsPath | Out-Null
-    Write-Output "junction created -> $SkillsPath"
-}
+Write-Output 'junction points at this skills folder - OK'
 
 Write-Output ''
 Write-Output '== 2. pre-commit hook =='
@@ -97,7 +104,7 @@ if ($DryRun) {
     Write-Output "[dry-run] would run $CheckBat"
 }
 else {
-    $null | & $CheckBat
+    cmd /c ('"' + $CheckBat + '" < nul')
     Write-Output "check exit = $LASTEXITCODE"
 }
 
