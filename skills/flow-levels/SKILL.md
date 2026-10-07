@@ -61,6 +61,10 @@ instead of silently doing more than asked.
 | 5 | **Commit** | Stage the intended changes and write a clear message. |
 | 6 | **Push** | Push the branch to its remote (`git push`) so the change leaves this machine. |
 
+- On the word **commit**, run all six steps in order **without asking** — never ask whether to
+  push: step 6 is part of the level, not optional. Stop and report only for the failure cases
+  below (red suite, unrelated changes, rejected push).
+
 - Do **not** build or package - no PyInstaller, no `build.ps1`, no `dist/`.
 - Stop and report if the full suite fails, or if the diff contains changes unrelated to this
   task (they need the user's decision).
