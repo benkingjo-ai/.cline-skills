@@ -9,12 +9,12 @@ Pick **one** level from the request, then follow only that section. To move up, 
 
 ## The four levels
 
-| Level | Tests | Optimize perf + dead code | Clear cache | Docs | Commit | Build |
-|---|---|---|---|---|---|---|
-| **baseline** (default) | affected only | - | - | - | - | - |
-| **optimize** | full | yes | yes | - | - | - |
-| **commit** | full | - | yes | yes | yes | - |
-| **release** | full | - | - | yes | yes | yes |
+| Level | Tests | Optimize perf + dead code | Clear cache | Docs | Commit | Push | Build |
+|---|---|---|---|---|---|---|---|
+| **baseline** (default) | affected only | - | - | - | - | - | - |
+| **optimize** | full | yes | yes | - | - | - | - |
+| **commit** | full | - | yes | yes | yes | yes | - |
+| **release** | - | - | - | - | - | - | yes |
 
 ## Clear cache set
 
@@ -59,25 +59,25 @@ instead of silently doing more than asked.
 | 3 | **Full test run** | Run the **entire** suite. **Stop and report if anything fails** - do not commit a red build. |
 | 4 | **Update docs** | `README.md`, `CHANGELOG.md` (keep-a-changelog), `docs/` - match them to the code. |
 | 5 | **Commit** | Stage the intended changes and write a clear message. |
+| 6 | **Push** | Push the branch to its remote (`git push`) so the change leaves this machine. |
 
 - Do **not** build or package - no PyInstaller, no `build.ps1`, no `dist/`.
 - Stop and report if the full suite fails, or if the diff contains changes unrelated to this
   task (they need the user's decision).
+- Push **only** the branch just committed, to its existing upstream; never force-push and
+  never push another branch. If there is no upstream, or the push is rejected (auth,
+  non-fast-forward), **stop and report** - do not force.
 - If a distributable is also wanted, stop and ask whether to move up to the release level.
 
 ## Release (level 4)
 
-Run these steps **in order**. Do not skip, reorder or parallelise them.
+Build the distributable. **This level does only the build.**
 
 | # | Step | Detail |
 |---|---|---|
-| 1 | **Full test run** | The **entire** suite. **Stop immediately on the first failure** and report it - nothing below runs on a red suite. |
-| 2 | **Update docs** | `README.md`, `CHANGELOG.md` (keep-a-changelog), `docs/` - match them to the code. |
-| 3 | **Commit** | Stage the intended changes and write a clear message. |
-| 4 | **Build / package** | PyInstaller one-file per the `flow-delivery` skill - a `.spec` whose version resource comes from `APP_VERSION`, output in `dist/`. |
+| 1 | **Build / package** | PyInstaller one-file per the `flow-delivery` skill - a `.spec` whose version resource comes from `APP_VERSION`, output in `dist/`. |
 
-- Do **not** build or commit before the full test suite passes.
+- **No** test run, docs, commit or push at this level - those belong to `commit`.
 - Do **not** hand-type the version in two places (see the `app-identity` skill).
-- If the message carries a version - `/release 1.4.2` or just a number - use it, and make sure
-  `APP_VERSION` and the `CHANGELOG.md` heading both carry it.
+- If the message carries a version - `/release 1.4.2` or just a number - use it for the build.
 - End with the artefacts produced (paths under `dist/`, plus the version used).

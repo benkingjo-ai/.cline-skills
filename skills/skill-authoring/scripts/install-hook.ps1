@@ -11,7 +11,7 @@
   pre-commit.bak rather than overwriting it. Use -DryRun to see the actions first.
 
 .EXAMPLE
-  powershell -NoProfile -File skill-authoring\scripts\install-hook.ps1 -DryRun
+  powershell -NoProfile -File skills\skill-authoring\scripts\install-hook.ps1 -DryRun
 #>
 [CmdletBinding()]
 param(
@@ -22,8 +22,8 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
-    # skill-authoring\scripts\ -> skill-authoring -> repo root
-    $RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+    # skills\skill-authoring\scripts\ -> skill-authoring -> skills -> repo root (.cline)
+    $RepoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 }
 $RepoRoot = [System.IO.Path]::GetFullPath($RepoRoot)
 

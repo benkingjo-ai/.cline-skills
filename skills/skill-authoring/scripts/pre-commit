@@ -2,7 +2,7 @@
 # Skills check - blocks the commit when the library is not clean.
 # Installed as .git/hooks/pre-commit by install-hook.ps1.
 # This file must stay LF: see .gitattributes.
-SCRIPT="skill-authoring/scripts/check-skills.ps1"
+SCRIPT="skills/skill-authoring/scripts/check-skills.ps1"
 if [ ! -f "$SCRIPT" ]; then
   echo "pre-commit: check script not found: $SCRIPT" >&2
   exit 1

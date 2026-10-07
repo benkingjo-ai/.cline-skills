@@ -92,10 +92,10 @@ Write-Output 'junction points at this skills folder - OK'
 Write-Output ''
 Write-Output '== 2. pre-commit hook =='
 if ($DryRun) {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $InstallHook -RepoRoot $RepoRoot -DryRun
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $InstallHook -DryRun
 }
 else {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $InstallHook -RepoRoot $RepoRoot
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $InstallHook
 }
 
 Write-Output ''
