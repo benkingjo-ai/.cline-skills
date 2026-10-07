@@ -15,7 +15,7 @@
 .PARAMETER SkillsPath
   The folder the junction is expected to point at. Defaults to the folder this script lives
   in. The office PC junction points at:
-    "$env:USERPROFILE\OneDrive - <tenant>\01 Documents\Github Projects\.cline\skills"
+    "$env:USERPROFILE\OneDrive - <tenant>\Documents\VS Code\.cline\skills"
 
 .PARAMETER DryRun
   Print every action without changing anything.
@@ -47,19 +47,16 @@ Write-Output "expected at : $SkillsPath"
 Write-Output "dry run     : $([bool]$DryRun)"
 Write-Output ''
 
-Write-Output '== 1. verify the junction (owned by link-cline-skills.bat) =='
+Write-Output '== 1. verify the link(s) to this skills folder =='
 if (-not (Test-Path -LiteralPath (Join-Path $SkillsPath 'skill-authoring\SKILL.md'))) {
     throw "not a skills folder (no skill-authoring\SKILL.md): $SkillsPath"
 }
 
 $link = Get-Item -LiteralPath $LinkPath -Force -ErrorAction SilentlyContinue
 if (-not $link) {
-    throw "no junction at $LinkPath - run link-cline-skills.bat in the .cline folder first"
+    throw "no skills folder at $LinkPath - run link-cline-skills.bat (single junction) or tools\install-skills.ps1 (per-skill junctions) first"
 }
 $isLink = ($link.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0
-if (-not $isLink) {
-    throw "$LinkPath exists but is a REAL folder, not a junction - the skills would not track this repo"
-}
 
 # Resolve a path through any reparse points so a junction alias and its real target
 # compare equal. Without this, running the script via the junction reports a false mismatch.
@@ -77,17 +74,40 @@ function Get-RealPath {
     return $p
 }
 
-$target = [string]@($link.Target)[0]
-Write-Output "junction exists -> $target"
+$normWant = (Get-RealPath $SkillsPath).TrimEnd('\')
 
-$normTarget = (Get-RealPath $LinkPath).TrimEnd('\')
-$normWant   = (Get-RealPath $SkillsPath).TrimEnd('\')
-if ($normTarget -ne $normWant) {
-    Write-Output "MISMATCH - the junction points at: $normTarget"
-    Write-Output "but this repo is:                    $normWant"
-    throw 'junction points at a different folder'
+if ($isLink) {
+    # Layout A - one junction whose target is this skills folder (link-cline-skills.bat)
+    $target = [string]@($link.Target)[0]
+    Write-Output "single junction -> $target"
+    $normTarget = (Get-RealPath $LinkPath).TrimEnd('\')
+    if ($normTarget -ne $normWant) {
+        Write-Output "MISMATCH - the junction points at: $normTarget"
+        Write-Output "but this repo is:                    $normWant"
+        throw 'junction points at a different folder'
+    }
+    Write-Output 'single junction points at this skills folder - OK'
 }
-Write-Output 'junction points at this skills folder - OK'
+else {
+    # Layout B - a real folder holding one junction per skill (tools\install-skills.ps1)
+    $entries = @(Get-ChildItem -LiteralPath $LinkPath -Directory -Force -ErrorAction SilentlyContinue)
+    if ($entries.Count -eq 0) {
+        throw "$LinkPath is a real folder with no per-skill junctions - run link-cline-skills.bat or tools\install-skills.ps1"
+    }
+    $bad = @()
+    foreach ($e in $entries) {
+        $eIsLink = ($e.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0
+        $eWant   = (Get-RealPath (Join-Path $SkillsPath $e.Name)).TrimEnd('\')
+        $eHave   = ''
+        if ($eIsLink) { $eHave = (Get-RealPath $e.FullName).TrimEnd('\') }
+        if (-not $eIsLink -or $eHave -ne $eWant) { $bad += $e.Name }
+    }
+    if ($bad.Count -gt 0) {
+        Write-Output ("MISMATCH - entries not tracking this repo: " + ($bad -join ', '))
+        throw 'not every per-skill entry is a junction into this repo'
+    }
+    Write-Output ("per-skill junctions - all {0} entries track this skills folder - OK" -f $entries.Count)
+}
 
 Write-Output ''
 Write-Output '== 2. pre-commit hook =='

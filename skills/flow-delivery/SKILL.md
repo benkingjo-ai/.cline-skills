@@ -56,6 +56,6 @@ from (e.g. *"manual 11.1"*, *"Sheets spec 14.3"*).
 - `release/` holds `<App>-<ver>.bundle.sha256.txt`.
 - **Put the venv outside the repo** — PySide6/PyQt unpacks deeply nested paths and
   Windows' 260-char limit breaks pip under a long OneDrive checkout (e.g. `D:\gv`).
-- Python 3.11 (64-bit) unless a wheel forces otherwise; check with `py -0p`.
+- Python 3.14 (64-bit) unless a wheel forces otherwise; check with `py -0p`.
 - New project → `.gitignore`, `README.md`, `CHANGELOG.md`, `requirements.txt` (or
   `pyproject.toml`) first.

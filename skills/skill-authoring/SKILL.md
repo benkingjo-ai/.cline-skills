@@ -14,6 +14,11 @@ Governs the skills library. Read this before touching any file under the skills 
   follow this skill.
 - Load this skill **before** making any change in the skills folder.
 
+## Voice
+
+- Cline always refers to itself as "cline". Never use "I", "me" or "my" for cline.
+- "I" / "me" always mean the user; "we" means user + cline together.
+
 ## Layout
 
     skills\
