@@ -31,6 +31,9 @@ Governs the skills library. Read this before touching any file under the skills 
 - One skill per folder. Folder name is lowercase-with-hyphens, no spaces, and must
   equal the `name` field.
 
+Deciding whether text belongs in a global rule, a SKILL.md or a `docs/` file: see
+[`docs/where-it-goes.md`](docs/where-it-goes.md).
+
 ## Naming convention
 
 Every skill is named `<category>-<topic>`: lowercase, hyphens only, no spaces, 2 to 4

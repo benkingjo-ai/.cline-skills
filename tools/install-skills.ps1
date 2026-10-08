@@ -87,28 +87,24 @@ function Get-ReparseInfo {
     $isReparse = ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0
 
     $target = ''
-    $linkType = ''
     if ($isReparse) {
         $tProp = $item.PSObject.Properties['Target']
         if ($tProp -and $tProp.Value) {
             $arr = @($tProp.Value)
             if ($arr.Count -gt 0) { $target = [string]$arr[0] }
         }
-        $ltProp = $item.PSObject.Properties['LinkType']
-        if ($ltProp -and $ltProp.Value) { $linkType = [string]$ltProp.Value }
     }
 
     return [pscustomobject]@{
         Path       = $Path
         IsReparse  = $isReparse
         Target     = $target
-        LinkType   = $linkType
         TargetPath = Normalize-PathString $target
     }
 }
 
 function Remove-Link {
-    param([string]$Path, [switch]$Force)
+    param([string]$Path)
 
     $ok = [AccessLib.Win32]::RemoveDirectory($Path)
     if (-not $ok) {
