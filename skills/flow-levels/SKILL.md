@@ -23,7 +23,7 @@ the task seems to need.
 | **baseline** (default) | affected only | - | - | - | - | - | - |
 | **optimize** | full | yes | yes | - | - | - | - |
 | **commit** | full | - | yes | yes | yes | yes | - |
-| **release** | - | - | - | - | - | - | yes |
+| **release** | - | - | - | - | - | - | one file |
 
 ## Level boundaries
 

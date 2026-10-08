@@ -15,8 +15,8 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 63 |
-| RISK | 7 |
+| ok | 64 |
+| RISK | 6 |
 | MISS | 0 |
 
 ## app-identity

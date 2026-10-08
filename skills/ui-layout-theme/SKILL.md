@@ -74,7 +74,7 @@ the tray rect and the work rect. The reaction is owned by the `win-shell` skill
 | Token | Value | Rule |
 |---|---|---|
 | `POPUP_MIN_WIDTH` | 260 px | the panel never gets narrower than this, however narrow the screen is |
-| `POPUP_WIDTH` | `work_w * POPUP_WIDTH_FRACTION` | then clamped to `POPUP_MIN_WIDTH` .. `work_w - 2 * POPUP_EDGE_MARGIN` |
+| `POPUP_WIDTH` | `work_w * POPUP_WIDTH_FRACTION` | then clamped to `POPUP_MIN_WIDTH` .. `work_w - 2 * POPUP_EDGE_MARGIN_MM` |
 | `DPI_BASE` | 96 | every px metric on this page is scaled by `dpi / DPI_BASE` before use |
 
 - **Portrait is the case that breaks**: 1/5 of a 1080-wide work area is 216 px, so
