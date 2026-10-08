@@ -27,7 +27,7 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Spinner while in flight` | code-concurrency | SKILL.md | - |
 | `Credentials file parser` | code-persistence | SKILL.md | code-sync, ui-dialogs |
 | `Secret hygiene` | code-persistence | SKILL.md | ui-dialogs, code-sync |
-| `The four levels` | flow-levels | SKILL.md | - |
+| `The four commands` | flow-levels | SKILL.md | - |
 | `Clear cache set` | flow-levels | SKILL.md | - |
 | `Package (lowercase = app name)` | app-structure | SKILL.md | flow-delivery |
 | `Documentation` | flow-delivery | SKILL.md | app-structure, win-shell |

@@ -31,27 +31,28 @@ code and reuse the same palette, dialogs and Win32 shell behaviour.
 | 9 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
 | 10 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
 | 11 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller one-file packaging |
-| 12 | `flow-levels/` | The four work levels: baseline, optimize, commit, release |
+| 12 | `flow-levels/` | The four work commands: code edit, clean up, build, push |
 | 13 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
 
-## Workflow levels
+## Workflow commands
 
 `flow-levels` sets *how much* work to do on a given request instead of *what* to do. It
-is the only skill here that is triggered by a word you type: pick **one** level, and only
-that level's steps run — never mixed, and never escalated by asking.
+is the only skill here that is triggered by a word you type: pick **one** command, and only
+that command's steps run — never mixed, and never escalated by asking.
 
-| Level | Trigger | Tests | Optimize perf + dead code | Clear cache | Docs | Commit | Push | Build |
-|---|---|---|---|---|---|---|---|---|
-| **baseline** | *(default — nothing typed)* | affected only | — | — | — | — | — | — |
-| **optimize** | `/optimize` or say `optimize` | full | yes | yes | — | — | — | — |
-| **commit** | `/commit` or say `commit` | full | — | yes | yes | yes | yes | — |
-| **release** | `/release [version]` or say `release` | — | — | — | — | — | — | one file |
+| Command | Typed | Steps, in order | Never does |
+|---|---|---|---|
+| **code edit** *(default — nothing typed)* | `/edit` or `code edit` | **A** partial test | clean up, full test, docs, commit, push, build |
+| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | docs, commit, push, build |
+| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | docs, commit, push, folder build |
+| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | build or package, force-push |
 
-`baseline` is what you get when no level word is typed (the skill historically called it
-`normal`). **One level per request**: cline does only that level's steps. Moving up is never
-asked for — anything another level owns is left undone and named in one line.
+`code edit` is what you get when no command word is typed. **One command per request**: cline
+does only that command's steps. Moving on is never asked for — anything another command owns is
+left undone and named in one line. The actions are **A** partial test, **B** clean up, **C**
+full test, **D** build, **E** docs, **F** push.
 
-Clear-cache set for all levels: `__pycache__/`, `*.pyc`, `.pytest_cache/`,
+Clear-cache set (action **B**, step 4): `__pycache__/`, `*.pyc`, `.pytest_cache/`,
 `.mypy_cache/`, `build/`, `dist/`.
 
 ## How to use
@@ -118,14 +119,14 @@ registry still exists in its owner file.
 3. The palette/font/metric tables in `ui-layout-theme` and the dialogs protocol in
    `ui-dialogs` are the parts every new GUI project inherits verbatim.
 
-### Triggering a workflow level
+### Triggering a workflow command
 
 | You type | Result |
 |---|---|
-| nothing | `baseline` — fix the affected code, affected tests only, no docs/build/commit |
-| `/optimize` or `optimize` | optimize + dead-code cleanup + cache clear + full tests |
-| `/commit` or `commit` | cleanup + cache clear + full tests + docs + commit + push |
-| `/release` or `release` | build only — one file: the single exe is the only artefact (no folder build) |
+| nothing | `code edit` — the scoped fix, affected tests only (**A**) |
+| `/cleanup` or `clean up` | profile, optimise, dead-code sweep, cache clear, full tests (**B**, **C**) |
+| `/build` or `build` (`/dist`) | full tests then the one-file exe — no docs, commit or push (**C**, **D**) |
+| `/push` or `push` | full tests, docs, then commit + push (**C**, **E**, **F**) |
 
 The slash form is deterministic; the bare word relies on the trigger phrases folded into
 the skill's `description`, so check the Skills tab if a bare word ever fails to fire.

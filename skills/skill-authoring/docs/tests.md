@@ -15,8 +15,8 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 59 |
-| RISK | 6 |
+| ok | 58 |
+| RISK | 7 |
 | MISS | 0 |
 
 ## app-identity
@@ -83,11 +83,11 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | # | request | expected | near-miss of | verdict |
 |---|---|---|---|---|
-| 1 | Fix the null check in the parser, no level named | trigger | | RISK (default level may not fire unprompted) |
-| 2 | commit | trigger | | ok |
-| 3 | Optimize this loop, it is slow | trigger | | ok |
+| 1 | Fix the null check in the parser, no command named | trigger | | RISK (default command may not fire unprompted) |
+| 2 | push | trigger | | ok |
+| 3 | Clean up this loop, it is slow | trigger | | ok |
 | 4 | Write the CHANGELOG entry for this version | no | flow-delivery | ok |
-| 5 | Add a system tray icon with states | no | win-shell | ok |
+| 5 | Build the one-file exe with PyInstaller | no | flow-delivery | RISK (build is a flow-levels command word too) |
 
 ## skill-authoring
 
@@ -157,10 +157,10 @@ Verdicts below were judged against the descriptions in force when this file was 
   whose behaviour they justify - `win-shell` (hotkey, autostart), `flow-delivery` (packaging)
   and `code-persistence` (refused filenames).
 - The remaining RISK rows are inherent to the subject matter - docs/CHANGELOG ownership,
-  tray artwork versus tray behaviour, tray states versus tray animation, and the default
-  level firing unprompted - and are not fixable by rewording.
-- Re-judged after the hotkey/documentation/packaging pass (no `WH_KEYBOARD_LL` hook, popup
-  minimum width and rotation, one level per request, one-file-only release): no `ok` turned
-  into a `RISK` or a `MISS`.
+  tray artwork versus tray behaviour, tray states versus tray animation, the default command
+  firing unprompted, and `build` being a `flow-levels` command word as well as `flow-delivery`
+  vocabulary - and are not fixable by rewording.
+- Re-judged after the levels-to-commands rewrite (`/edit`, `/cleanup`, `/build`, `/push`): the
+  packaging probe is a RISK now, because `build` is a command word too.
 - Re-judge this file after every description change, and revert any change that turns an
   `ok` into a `RISK` or `MISS`.

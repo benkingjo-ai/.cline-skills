@@ -20,7 +20,7 @@ start of the bullet.
 - `ui-` layout, theme, dialogs, icons and assets
 - `code-` concurrency, persistence, logging, backend sync, performance
 - `win-` Windows and shell specifics
-- `flow-` workflows such as commit, release, testing, optimize
+- `flow-` workflows such as clean up, build, push, testing
 - `skill-` skills about skills (only `skill-authoring`)
 <!-- prefixes:end -->
 

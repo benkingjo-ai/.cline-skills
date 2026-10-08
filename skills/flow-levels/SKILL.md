@@ -1,110 +1,80 @@
 ---
 name: flow-levels
-description: House work levels, one per request: baseline, optimize, commit, release. Follow only the named section, never ask, never mix. Fire on a level word (commit, optimize, release, normal), on wrapping up, on optimizing, or on a release build.
+description: House work commands, one per request: code edit (the default), clean up, build, push. Follow only that command's steps, never ask, never mix. Fire on a command word (build, dist, push, clean up), on optimising, or on wrapping up.
 ---
 
-# Workflow Levels
+# Workflow Commands
 
-**One level per request, and only the steps that level lists.** The level comes from the
-typed word (`baseline`, `optimize`, `commit`, `release`) and from nothing else - not from what
-the task seems to need.
+**One command per request, and only the steps that command lists.** The command comes from the
+typed word (`code edit`, `clean up`, `build`, `push`) and from nothing else - not from what the
+task seems to need.
 
-- Do **only** the steps of the named level. A step that belongs to another level is **not**
+- Do **only** the steps of the named command. A step that belongs to another command is **not**
   performed and **not** asked about: name it in one line at the end and stop.
-- Never mix two levels in one pass, and never continue "helpfully" into the next step.
-- Never ask whether to move up. You name the next level when you want it.
+- Never mix two commands in one pass, and never continue "helpfully" into the next step.
+- Never ask whether to run another command. You name the next one when you want it.
 - Stop-and-report - never a question - only for: a red test run, a change unrelated to the
-  task, a rejected push, or a step this level requires that cannot be completed.
+  task, a rejected push, or a step this command requires that cannot be completed.
 
-## The four levels
+## The four commands
 
-| Level | Tests | Optimize perf + dead code | Clear cache | Docs | Commit | Push | Build |
-|---|---|---|---|---|---|---|---|
-| **baseline** (default) | affected only | - | - | - | - | - | - |
-| **optimize** | full | yes | yes | - | - | - | - |
-| **commit** | full | - | yes | yes | yes | yes | - |
-| **release** | - | - | - | - | - | - | one file |
+| Command | Typed | Steps, in order | Never does |
+|---|---|---|---|
+| **code edit** (default) | `/edit` or `code edit` | **A** partial test | clean up, cache clear, full test, docs, commit, push, build |
+| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | docs, commit, push, build |
+| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | docs, commit, push, folder build |
+| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | build or package, force-push, another branch |
 
-## Level boundaries
+`code edit` is what you get when nothing is typed. A step a command does not list is left undone
+and named in one line - never asked about.
 
-| Level | Does | Never does |
-|---|---|---|
-| **baseline** | the scoped fix, affected tests | full suite, cache clear, dead-code sweep, docs, commit, push, build |
-| **optimize** | profile, optimize, dead code, clear cache, full suite | docs, commit, push, build |
-| **commit** | dead code, clear cache, full suite, docs, commit, push | build or package |
-| **release** | the one-file build | tests, docs, commit, push, cache clear, folder build |
+## The actions
+
+| # | Action | Steps | Detail owned by |
+|---|---|---|---|
+| **A** | **partial test** | run **only** the tests that cover the edited code, report the result | `flow-delivery`, *Testing* |
+| **B** | **clean up** | 1 profile the hot path first, 2 optimise the measured hot spots, 3 remove dead code, 4 clear the cache set | this skill, *Clear cache set* |
+| **C** | **full test** | run the **entire** suite and report pass/fail counts; a failure stops the command | `flow-delivery`, *Testing* |
+| **D** | **build** | PyInstaller **one-file** exe into `dist/` | `flow-delivery`, *One-file only* |
+| **E** | **docs** | match `README.md`, `CHANGELOG.md` (keep-a-changelog) and `docs/` to the code | `flow-delivery` §1, *Documentation* |
+| **F** | **push** | stage the intended changes, write a clear message, commit, push the branch to its upstream | this skill |
 
 ## Clear cache set
 
 `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.mypy_cache/`, `build/`, `dist/`.
 
-## Baseline (level 1, the default)
+## What each command adds
 
-Apply unless the request names another level.
+**code edit - A**
+- The **smallest correct change, scoped to the code the user pointed at**. No drive-by refactors.
+- Tests: run **only** the ones that cover the edited code, and report the result.
+- No docs, no build, no commit: leave the working tree dirty and name whatever is left.
 
-| Area | Rule |
-|---|---|
-| Code | Smallest correct change, **scoped to the code the user pointed at**. No drive-by refactors. |
-| Tests | Run **only** the tests that cover the edited code. Report the result. |
-| Docs | **None** - do not write or update `README.md`, `CHANGELOG.md` or `docs/`. |
-| Build | **None** - do not run PyInstaller or `build.ps1`, do not produce `dist/`. |
-| Commit | **None** - leave the working tree dirty. |
+**clean up - B, C**
+- Profile before changing anything: no speculative rewrites. Behaviour must stay identical - the
+  full suite is the proof.
+- Dead code: unused imports, unreachable branches, leftover debug hooks.
+- Clear the cache set **last** - deleted, never committed - and never right after a build: it
+  holds `build/` and `dist/`.
+- Stop and report if the suite fails after an optimisation, or if an optimisation would change
+  observable behaviour.
 
-A need for docs, a build or a commit does **not** change the level: leave it undone, name it
-in one line, and stop - do not ask, and do not do it.
+**build - C, D**
+- The full suite runs **before** the build: never package a red tree.
+- **One-file only** (owner: `flow-delivery`): a single `<App>.exe` in `dist/`. Never `--onedir`,
+  a folder release or a `.zip` of a folder - a one-folder build is a diagnostic at most.
+- Do **not** hand-type the version in two places (see the `app-identity` skill). If the message
+  carries a version - `/build 1.4.2` or just a number - use it for the build.
+- No docs, commit or push here.
+- End with the artefacts (the `.exe` path under `dist/`, plus the version used).
 
-## Optimize (level 2)
-
-| # | Step | Detail |
-|---|---|---|
-| 1 | **Profile first** | Identify the hot path before changing anything. No speculative rewrites. |
-| 2 | **Optimize performance** | Improve the measured hot spots. Behaviour must stay identical - the full suite is the proof. |
-| 3 | **Remove dead code** | Unused imports, unreachable branches, leftover debug hooks. |
-| 4 | **Clear cache** | the clear-cache set above |
-| 5 | **Full test run** | Run the **entire** suite, not a subset. Report pass/fail counts. |
-
-- Do **not** write or update documentation, build, or commit - leave the working tree dirty.
-- Stop and report if the full suite fails after an optimisation, or if an optimisation would
-  change observable behaviour.
-- Docs, a build, a package or a push are other levels' steps: leave them undone and name them
-  in one line - never ask and never do them.
-
-## Commit (level 3)
-
-| # | Step | Detail |
-|---|---|---|
-| 1 | **Remove dead code** | Unused imports, unreachable branches, leftover debug hooks. |
-| 2 | **Clear cache** | the clear-cache set above |
-| 3 | **Full test run** | Run the **entire** suite. **Stop and report if anything fails** - do not commit a red build. |
-| 4 | **Update docs** | `README.md`, `CHANGELOG.md` (keep-a-changelog), `docs/` - match them to the code. |
-| 5 | **Commit** | Stage the intended changes and write a clear message. |
-| 6 | **Push** | Push the branch to its remote (`git push`) so the change leaves this machine. |
-
-- On the word **commit**, run all six steps in order **without asking** — never ask whether to
-  push: step 6 is part of the level, not optional. Stop and report only for the failure cases
-  below (red suite, unrelated changes, rejected push).
-
-- Do **not** build or package - no PyInstaller, no `build.ps1`, no `dist/`.
-- Stop and report if the full suite fails, or if the diff contains changes unrelated to this
-  task (they need the user's decision).
-- Push **only** the branch just committed, to its existing upstream; never force-push and
-  never push another branch. If there is no upstream, or the push is rejected (auth,
-  non-fast-forward), **stop and report** - do not force.
-- A distributable is the `release` level's own step: leave it, name it in one line - do not
-  build and do not ask.
-
-## Release (level 4)
-
-Build the distributable. **This level does only the build, and the only artefact is a single
-file.**
-
-| # | Step | Detail |
-|---|---|---|
-| 1 | **Build / package** | PyInstaller **one-file** per the `flow-delivery` skill (**One-file only**) - a `.spec` whose version resource comes from `APP_VERSION`, output in `dist/`. |
-
-- **Never** a folder build: no `--onedir`, no directory release, no `.zip` of a folder - a
-  one-folder build is a diagnostic at most and is never handed to a user.
-- **No** test run, docs, commit or push at this level - those belong to `commit`.
-- Do **not** hand-type the version in two places (see the `app-identity` skill).
-- If the message carries a version - `/release 1.4.2` or just a number - use it for the build.
-- End with the artefacts produced (the `.exe` path under `dist/`, plus the version used).
+**push - C, E, F**
+- The full suite runs **before** the commit: **stop and report if anything fails** - never commit
+  or push a red build.
+- Run C, E and F in order **without asking** - F is part of the command, not optional, so never
+  ask whether to push.
+- Stop and report if the diff contains changes unrelated to this task (they need your decision).
+- Push **only** the branch just committed, to its existing upstream; never force-push and never
+  push another branch. With no upstream, or a push rejected (auth, non-fast-forward), **stop and
+  report** - do not force.
+- No build or package: no PyInstaller, no `build.ps1`, no `dist/`.
