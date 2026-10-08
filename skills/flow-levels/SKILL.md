@@ -88,8 +88,9 @@ The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per 
 - End with the artefacts (the `.exe` path under `dist/`, plus the version used).
 
 **push / push-minor / push-master - C, E, F**
-- **Remote first**: check the push URL with `git remote get-url --push` before anything else.
-  It must be the **`benkingjo-ai`** account; a missing or foreign remote is a stop-and-report
+- **Remote first**: check the push URL with `git remote get-url --push <remote>` (normally
+  `origin`) before anything else. It must be the **`benkingjo-ai`** account; a missing or
+  foreign remote is a stop-and-report
   case - never push anywhere else. The `pre-push` hook enforces the same rule, so a manual
   `git push` is blocked too (owner: `skill-authoring`, *Push remote guard*).
 - The full suite runs **before** the commit: **stop and report if anything fails** - never commit

@@ -3,6 +3,18 @@
 All notable changes to this skills library. Format: keep-a-changelog. The version lives in
 `VERSION` - one place, bumped by the `push` commands (see the `flow-levels` skill).
 
+## [1.0.1] - 2026-10-08
+
+### Fixed
+
+- `flow-levels`: the push remote check now reads `git remote get-url --push <remote>`. The
+  previous wording omitted the remote name, so the command printed git usage instead of the
+  URL.
+
+### Changed
+
+- Patch bump; no other content change since 1.0.0.
+
 ## [1.0.0] - 2026-10-08
 
 ### Added
