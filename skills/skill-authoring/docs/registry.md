@@ -29,6 +29,8 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Secret hygiene` | code-persistence | SKILL.md | ui-dialogs, code-sync |
 | `The four commands` | flow-levels | SKILL.md | - |
 | `Clear cache set` | flow-levels | SKILL.md | - |
+| `Version bumps` | flow-levels | SKILL.md | flow-delivery |
+| `Push remote guard` | skill-authoring | scripts/pre-push | flow-levels |
 | `Package (lowercase = app name)` | app-structure | SKILL.md | flow-delivery |
 | `Documentation` | flow-delivery | SKILL.md | app-structure, win-shell |
 | `Testing` | flow-delivery | SKILL.md | win-shell |

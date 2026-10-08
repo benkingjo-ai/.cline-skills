@@ -1,0 +1,25 @@
+#!/bin/sh
+# Push remote guard - this library is pushed only to the benkingjo-ai account.
+# Installed as .git/hooks/pre-push by install-hook.ps1.
+# Rule anchor: Push remote guard.
+# Git calls this with $1 = remote name, $2 = remote URL.
+# This file must stay LF: see .gitattributes.
+REMOTE_NAME="$1"
+REMOTE_URL="$2"
+
+if [ -z "$REMOTE_URL" ]; then
+  echo "pre-push: no remote URL was passed - refusing to push" >&2
+  exit 1
+fi
+
+case "$REMOTE_URL" in
+  *benkingjo-ai/*) ;;
+  *)
+    echo "pre-push: refusing to push to $REMOTE_URL" >&2
+    echo "pre-push: this library is pushed only to the benkingjo-ai account" >&2
+    exit 1
+    ;;
+esac
+
+echo "pre-push: $REMOTE_NAME -> benkingjo-ai  (allowed)"
+exit 0

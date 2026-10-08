@@ -40,12 +40,14 @@ code and reuse the same palette, dialogs and Win32 shell behaviour.
 is the only skill here that is triggered by a word you type: pick **one** command, and only
 that command's steps run — never mixed, and never escalated by asking.
 
-| Command | Typed | Steps, in order | Never does |
-|---|---|---|---|
-| **code edit** *(default — nothing typed)* | `/edit` or `code edit` | **A** partial test | clean up, full test, docs, commit, push, build |
-| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | docs, commit, push, build |
-| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | docs, commit, push, folder build |
-| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | build or package, force-push |
+| Command | Typed | Steps, in order | Version | Never does |
+|---|---|---|---|---|
+| **code edit** *(default — nothing typed)* | `/edit` or `code edit` | **A** partial test | — | clean up, full test, docs, commit, push, build |
+| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | — | docs, commit, push, build |
+| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | — | docs, commit, push, folder build |
+| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | patch | build or package, force-push |
+| **push-minor** | `/push-minor` | **C** full test, **E** docs, **F** push | minor | as `push` |
+| **push-master** | `/push-master` | **C** full test, **E** docs, **F** push | major | as `push` |
 
 `code edit` is what you get when no command word is typed. **One command per request**: cline
 does only that command's steps. Moving on is never asked for — anything another command owns is
@@ -54,6 +56,23 @@ full test, **D** build, **E** docs, **F** push.
 
 Clear-cache set (action **B**, step 4): `__pycache__/`, `*.pyc`, `.pytest_cache/`,
 `.mypy_cache/`, `build/`, `dist/`.
+
+### Versioning
+
+The library version lives in `VERSION` (single source of truth) and every release is recorded
+in `CHANGELOG.md` (keep-a-changelog). The push commands bump one component:
+
+| Command | Bump | Example |
+|---|---|---|
+| `push` | patch | 1.0.0 → 1.0.1 |
+| `push-minor` | minor | 1.0.1 → 1.1.0 |
+| `push-master` | major | 1.1.0 → 2.0.0 |
+
+Each release is tagged `vX.Y.Z` on its commit; there is one branch (`main`) and no release
+branches. Pushes go **only** to the `benkingjo-ai` account: the push step checks the remote URL
+first, and `skills/skill-authoring/scripts/pre-push` — installed as `.git/hooks/pre-push` by
+`skills/bootstrap.ps1` (or `install-hook.ps1` directly) — refuses any other remote, including a
+manual `git push`.
 
 ## How to use
 
@@ -126,7 +145,9 @@ registry still exists in its owner file.
 | nothing | `code edit` — the scoped fix, affected tests only (**A**) |
 | `/cleanup` or `clean up` | profile, optimise, dead-code sweep, cache clear, full tests (**B**, **C**) |
 | `/build` or `build` (`/dist`) | full tests then the one-file exe — no docs, commit or push (**C**, **D**) |
-| `/push` or `push` | full tests, docs, then commit + push (**C**, **E**, **F**) |
+| `/push` or `push` | full tests, docs, **patch** bump, then commit + push (**C**, **E**, **F**) |
+| `/push-minor` | the same, bumping the **minor** version |
+| `/push-master` | the same, bumping the **major** version |
 
 The slash form is deterministic; the bare word relies on the trigger phrases folded into
 the skill's `description`, so check the Skills tab if a bare word ever fails to fire.

@@ -84,7 +84,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 | # | request | expected | near-miss of | verdict |
 |---|---|---|---|---|
 | 1 | Fix the null check in the parser, no command named | trigger | | RISK (default command may not fire unprompted) |
-| 2 | push | trigger | | ok |
+| 2 | push-minor | trigger | | ok |
 | 3 | Clean up this loop, it is slow | trigger | | ok |
 | 4 | Write the CHANGELOG entry for this version | no | flow-delivery | ok |
 | 5 | Build the one-file exe with PyInstaller | no | flow-delivery | RISK (build is a flow-levels command word too) |
@@ -162,5 +162,7 @@ Verdicts below were judged against the descriptions in force when this file was 
   vocabulary - and are not fixable by rewording.
 - Re-judged after the levels-to-commands rewrite (`/edit`, `/cleanup`, `/build`, `/push`): the
   packaging probe is a RISK now, because `build` is a command word too.
+- `push`, `push-minor` and `push-master` share one set of trigger words; `push-minor` is the
+  probe that proves the versioned family fires.
 - Re-judge this file after every description change, and revert any change that turns an
   `ok` into a `RISK` or `MISS`.

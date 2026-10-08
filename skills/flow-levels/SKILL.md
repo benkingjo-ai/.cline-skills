@@ -1,6 +1,6 @@
 ---
 name: flow-levels
-description: House work commands, one per request: code edit (the default), clean up, build, push. Follow only that command's steps, never ask, never mix. Fire on a command word (build, dist, push, clean up), on optimising, or on wrapping up.
+description: House work commands, one per request: code edit (default), clean up, build, dist, push (patch), push-minor, push-master. Follow only that command's steps, never ask, never mix. Fire on a command word, on optimising, or on wrapping up.
 ---
 
 # Workflow Commands
@@ -18,12 +18,14 @@ task seems to need.
 
 ## The four commands
 
-| Command | Typed | Steps, in order | Never does |
-|---|---|---|---|
-| **code edit** (default) | `/edit` or `code edit` | **A** partial test | clean up, cache clear, full test, docs, commit, push, build |
-| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | docs, commit, push, build |
-| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | docs, commit, push, folder build |
-| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | build or package, force-push, another branch |
+| Command | Typed | Steps, in order | Version | Never does |
+|---|---|---|---|---|
+| **code edit** (default) | `/edit` or `code edit` | **A** partial test | - | clean up, cache clear, full test, docs, commit, push, build |
+| **clean up** | `/cleanup` or `clean up` | **B** clean up, **C** full test | - | docs, commit, push, build |
+| **build** | `/build` or `build`, alias `/dist` | **C** full test, **D** build | - | docs, commit, push, folder build |
+| **push** | `/push` or `push` | **C** full test, **E** docs, **F** push | patch | build or package, force-push, another branch |
+| **push-minor** | `/push-minor` | **C** full test, **E** docs, **F** push | minor | as `push` |
+| **push-master** | `/push-master` | **C** full test, **E** docs, **F** push | major | as `push` |
 
 `code edit` is what you get when nothing is typed. A step a command does not list is left undone
 and named in one line - never asked about.
@@ -42,6 +44,23 @@ and named in one line - never asked about.
 ## Clear cache set
 
 `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.mypy_cache/`, `build/`, `dist/`.
+
+## Version bumps
+
+The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per release in
+`CHANGELOG.md` (keep-a-changelog; the format is owned by the `flow-delivery` skill).
+
+| Command | Bump | Example |
+|---|---|---|
+| `push` | patch | 1.0.0 -> 1.0.1 |
+| `push-minor` | minor | 1.0.1 -> 1.1.0 |
+| `push-master` | major | 1.1.0 -> 2.0.0 |
+
+- Read `VERSION`, bump the component the command names, and write it back **before** the docs
+  step, so the changelog entry and the commit subject (`release vX.Y.Z: <summary>`) carry the
+  new number.
+- Tag the release commit `vX.Y.Z`. No release branches: the tag and the push go to the current
+  branch and its upstream.
 
 ## What each command adds
 
@@ -68,11 +87,17 @@ and named in one line - never asked about.
 - No docs, commit or push here.
 - End with the artefacts (the `.exe` path under `dist/`, plus the version used).
 
-**push - C, E, F**
+**push / push-minor / push-master - C, E, F**
+- **Remote first**: check the push URL with `git remote get-url --push` before anything else.
+  It must be the **`benkingjo-ai`** account; a missing or foreign remote is a stop-and-report
+  case - never push anywhere else. The `pre-push` hook enforces the same rule, so a manual
+  `git push` is blocked too (owner: `skill-authoring`, *Push remote guard*).
 - The full suite runs **before** the commit: **stop and report if anything fails** - never commit
   or push a red build.
+- Bump `VERSION` by the component the command names (patch / minor / major), then write the
+  `CHANGELOG.md` entry for it - see *Version bumps*.
 - Run C, E and F in order **without asking** - F is part of the command, not optional, so never
-  ask whether to push.
+  ask whether to push. Tag the release commit `vX.Y.Z`.
 - Stop and report if the diff contains changes unrelated to this task (they need your decision).
 - Push **only** the branch just committed, to its existing upstream; never force-push and never
   push another branch. With no upstream, or a push rejected (auth, non-fast-forward), **stop and

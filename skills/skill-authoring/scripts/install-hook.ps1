@@ -27,32 +27,48 @@ if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
 }
 $RepoRoot = [System.IO.Path]::GetFullPath($RepoRoot)
 
-$source = Join-Path $PSScriptRoot 'pre-commit'
+$hooks = @('pre-commit', 'pre-push')
 $gitDir = Join-Path $RepoRoot '.git'
-$hooks  = Join-Path $gitDir 'hooks'
-$dest   = Join-Path $hooks 'pre-commit'
+$hookDir = Join-Path $gitDir 'hooks'
 
 Write-Output "repo root : $RepoRoot"
-Write-Output "source    : $source"
-Write-Output "target    : $dest"
+Write-Output "hook dir  : $hookDir"
+Write-Output ("hooks     : " + ($hooks -join ', '))
 Write-Output ''
 
-if (-not (Test-Path -LiteralPath $source)) { throw "hook source not found: $source" }
 if (-not (Test-Path -LiteralPath $gitDir)) { throw "not a git repository (no .git at $RepoRoot) - run 'git init' first" }
+
+foreach ($name in $hooks) {
+    $src = Join-Path $PSScriptRoot $name
+    if (-not (Test-Path -LiteralPath $src)) { throw "hook source not found: $src" }
+}
 
 if ($DryRun) {
     Write-Output '[dry-run] would create the hooks folder if missing'
-    Write-Output '[dry-run] would move an existing hook to pre-commit.bak'
-    Write-Output '[dry-run] would copy the hook source to the target'
+    foreach ($name in $hooks) {
+        Write-Output ("[dry-run] would move a changed {0} aside as {0}.bak" -f $name)
+        Write-Output ("[dry-run] would copy {0} into the hooks folder" -f $name)
+    }
     Write-Output '[dry-run] no changes made'
     return
 }
 
-if (-not (Test-Path -LiteralPath $hooks)) { New-Item -ItemType Directory -Force -Path $hooks | Out-Null }
-if (Test-Path -LiteralPath $dest) {
-    $bak = Join-Path $hooks 'pre-commit.bak'
-    Move-Item -LiteralPath $dest -Destination $bak -Force
-    Write-Output "existing hook moved aside -> $bak"
+if (-not (Test-Path -LiteralPath $hookDir)) { New-Item -ItemType Directory -Force -Path $hookDir | Out-Null }
+
+foreach ($name in $hooks) {
+    $src  = Join-Path $PSScriptRoot $name
+    $dest = Join-Path $hookDir $name
+
+    if (Test-Path -LiteralPath $dest) {
+        $same = ((Get-Content -LiteralPath $dest -Raw) -eq (Get-Content -LiteralPath $src -Raw))
+        if ($same) {
+            Write-Output "hook unchanged: $name"
+            continue
+        }
+        $bak = "$dest.bak"
+        Move-Item -LiteralPath $dest -Destination $bak -Force
+        Write-Output "existing $name moved aside -> $bak"
+    }
+    Copy-Item -LiteralPath $src -Destination $dest -Force
+    Write-Output "hook installed: $name"
 }
-Copy-Item -LiteralPath $source -Destination $dest -Force
-Write-Output 'hook installed'
