@@ -1,11 +1,20 @@
 ---
 name: flow-levels
-description: House work levels: baseline, optimize, commit, release - follow only the named section. Fire on a level word (commit, optimize, release, normal), on wrapping up and committing, on optimizing, or on a release build.
+description: House work levels, one per request: baseline, optimize, commit, release. Follow only the named section, never ask, never mix. Fire on a level word (commit, optimize, release, normal), on wrapping up, on optimizing, or on a release build.
 ---
 
 # Workflow Levels
 
-Pick **one** level from the request, then follow only that section. To move up, stop and ask.
+**One level per request, and only the steps that level lists.** The level comes from the
+typed word (`baseline`, `optimize`, `commit`, `release`) and from nothing else - not from what
+the task seems to need.
+
+- Do **only** the steps of the named level. A step that belongs to another level is **not**
+  performed and **not** asked about: name it in one line at the end and stop.
+- Never mix two levels in one pass, and never continue "helpfully" into the next step.
+- Never ask whether to move up. You name the next level when you want it.
+- Stop-and-report - never a question - only for: a red test run, a change unrelated to the
+  task, a rejected push, or a step this level requires that cannot be completed.
 
 ## The four levels
 
@@ -15,6 +24,15 @@ Pick **one** level from the request, then follow only that section. To move up, 
 | **optimize** | full | yes | yes | - | - | - | - |
 | **commit** | full | - | yes | yes | yes | yes | - |
 | **release** | - | - | - | - | - | - | yes |
+
+## Level boundaries
+
+| Level | Does | Never does |
+|---|---|---|
+| **baseline** | the scoped fix, affected tests | full suite, cache clear, dead-code sweep, docs, commit, push, build |
+| **optimize** | profile, optimize, dead code, clear cache, full suite | docs, commit, push, build |
+| **commit** | dead code, clear cache, full suite, docs, commit, push | build or package |
+| **release** | the one-file build | tests, docs, commit, push, cache clear, folder build |
 
 ## Clear cache set
 
@@ -32,8 +50,8 @@ Apply unless the request names another level.
 | Build | **None** - do not run PyInstaller or `build.ps1`, do not produce `dist/`. |
 | Commit | **None** - leave the working tree dirty. |
 
-If the task genuinely needs docs, a build or a commit, **stop and ask which level to enter**
-instead of silently doing more than asked.
+A need for docs, a build or a commit does **not** change the level: leave it undone, name it
+in one line, and stop - do not ask, and do not do it.
 
 ## Optimize (level 2)
 
@@ -48,7 +66,8 @@ instead of silently doing more than asked.
 - Do **not** write or update documentation, build, or commit - leave the working tree dirty.
 - Stop and report if the full suite fails after an optimisation, or if an optimisation would
   change observable behaviour.
-- If the task also needs docs, a build or a commit, stop and ask whether to move up.
+- Docs, a build, a package or a push are other levels' steps: leave them undone and name them
+  in one line - never ask and never do them.
 
 ## Commit (level 3)
 
@@ -71,17 +90,21 @@ instead of silently doing more than asked.
 - Push **only** the branch just committed, to its existing upstream; never force-push and
   never push another branch. If there is no upstream, or the push is rejected (auth,
   non-fast-forward), **stop and report** - do not force.
-- If a distributable is also wanted, stop and ask whether to move up to the release level.
+- A distributable is the `release` level's own step: leave it, name it in one line - do not
+  build and do not ask.
 
 ## Release (level 4)
 
-Build the distributable. **This level does only the build.**
+Build the distributable. **This level does only the build, and the only artefact is a single
+file.**
 
 | # | Step | Detail |
 |---|---|---|
-| 1 | **Build / package** | PyInstaller one-file per the `flow-delivery` skill - a `.spec` whose version resource comes from `APP_VERSION`, output in `dist/`. |
+| 1 | **Build / package** | PyInstaller **one-file** per the `flow-delivery` skill (**One-file only**) - a `.spec` whose version resource comes from `APP_VERSION`, output in `dist/`. |
 
+- **Never** a folder build: no `--onedir`, no directory release, no `.zip` of a folder - a
+  one-folder build is a diagnostic at most and is never handed to a user.
 - **No** test run, docs, commit or push at this level - those belong to `commit`.
 - Do **not** hand-type the version in two places (see the `app-identity` skill).
 - If the message carries a version - `/release 1.4.2` or just a number - use it for the build.
-- End with the artefacts produced (paths under `dist/`, plus the version used).
+- End with the artefacts produced (the `.exe` path under `dist/`, plus the version used).

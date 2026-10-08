@@ -1,6 +1,6 @@
 ---
 name: win-shell
-description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey with a hook fallback, single-instance mutex, AUMID toasts, autostart, borderless tool windows. Use when adding tray behaviour, global shortcuts, toasts or autostart.
+description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey with a re-arm watchdog, single-instance mutex, AUMID toasts, autostart, borderless tool windows. Use when adding tray behaviour, global shortcuts, toasts or autostart.
 ---
 
 # Win32 Shell
@@ -18,20 +18,21 @@ description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey wi
 
 ## 2. Global hotkey — **Alt+Q**
 
-Two independent paths, because `RegisterHotKey` is first-come-first-served and Windows
-drops it across sleep/resume:
+`RegisterHotKey` **only**. There is no `WH_KEYBOARD_LL` hook: a global low-level keyboard
+hook is a scored keylogger signature and this app never needs one (the reasoning is owned by
+`win-av-behaviour`, *Scored behaviours*).
 
-| Path | Module | Notes |
+| Step | Call | Notes |
 |---|---|---|
-| Primary | `RegisterHotKey` | quick, normal case |
-| Fallback | `WH_KEYBOARD_LL` hook | keeps Alt+Q working after sleep/resume or contention |
+| Register | `RegisterHotKey(hwnd, HOTKEY_ID, MOD_ALT, VK_Q)` | its own thread with its own `GetMessage`/`DispatchMessage` pump — a message pump is not a hook |
+| Re-arm | `UnregisterHotKey`, then register again | after resume (`WM_POWERBROADCAST` / `PBT_APMRESUMEAUTOMATIC`), `WTS_SESSION_UNLOCK`, `WM_DISPLAYCHANGE`, and every `HOTKEY_RETRY_S` (30 s) while the last attempt failed |
+| Handle | `WM_HOTKEY` on that thread | sets a flag the GUI pump reads — the handler never touches the toolkit |
 
-Hook rules (non-negotiable):
-
-- Runs on **its own thread with its own message pump** (`GetMessage`/`DispatchMessage`).
-- The hook procedure **never touches the toolkit** — it sets a flag the GUI pump reads.
-- Treat down/up so it behaves like `NOREPEAT`; re-arm on release.
-- `active` must check the **thread is alive** — Windows silently removes a slow hook.
+- **A lost registration is never silent**: `ERROR_HOTKEY_ALREADY_REGISTERED` (another
+  process owns the chord) or a failed re-arm is reported in the tray menu and the log, so a
+  dead shortcut is visible instead of unexplained.
+- `active` must check the **thread is alive and the last register succeeded** — Windows
+  silently drops a registration across sleep/resume.
 
 ## 3. Single-instance guard
 
@@ -53,8 +54,10 @@ def acquire_single_instance() -> bool:
    exists** (the shell reads it once at startup).
 2. `register()` → write `DisplayName` + `IconUri` under
    `HKCU\Software\Classes\AppUserModelId\<AUMID>` — idempotent, by value.
-3. `stable_icon_path()` copies the `.ico` into `%APPDATA%` so `IconUri` outlives the
-   one-file unpack.
+3. `stable_icon_path()` copies the `.ico` into `%APPDATA%` **only** when the build
+   unpacks to a temporary folder; a build with its own folder returns its own icon,
+   and a machine that refuses that filename is reported instead of fought (see the
+   `win-av-behaviour` skill).
 4. Send the toast through the same AUMID with a `ToastGeneric` XML payload.
 5. `init_apartment()` once per process (STA, fall back to MTA) before the first WinRT call.
 6. **Best-effort and quiet**: a failure logs `[APPID] …` and never stops the app starting
@@ -73,6 +76,10 @@ def acquire_single_instance() -> bool:
 
 - Borderless tool windows (`WS_EX_TOOLWINDOW`), `-topmost`, out of taskbar/Alt+Tab;
   re-assert topmost every ~2 s.
+- **Display change — re-place**: on `WM_DISPLAYCHANGE`, `WM_SETTINGCHANGE`, `WM_DPICHANGED`
+  or session unlock, recompute the tray and work-area rect, place the popup at its top-right
+  slot again and re-assert topmost. Never reuse a cached work rect across those messages
+  (values owned by the `ui-layout-theme` skill, *Screen rotation & scaling*).
 - Always declare `argtypes`/`restype` (an undeclared pointer is marshalled as 32-bit
   `c_int`) and use `use_last_error=True`.
 
@@ -81,3 +88,6 @@ def acquire_single_instance() -> bool:
 
 - `startup.py` (`python -m <pkg>.startup` / `--remove`): a Task Scheduler `ONLOGON` task with a short delay, falling back to the `HKCU\...\CurrentVersion\Run` key.
 - Both are scoped to the current user; no elevation is required.
+- **User opt-in only**: a launch never writes the entry itself - self-registering
+  persistence is one of the behaviours an endpoint product scores (see
+  `win-av-behaviour`).

@@ -1,6 +1,6 @@
 # Trigger tests
 
-Test corpus for the 15 skill trigger descriptions. For each skill: **three requests that
+Test corpus for the 14 skill trigger descriptions. For each skill: **three requests that
 should trigger it** and **two that must not**. At least one "must not" per skill is a
 near-miss aimed at a sibling skill's vocabulary, to catch descriptions that are too broad.
 
@@ -15,8 +15,8 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 55 |
-| RISK | 5 |
+| ok | 63 |
+| RISK | 7 |
 | MISS | 0 |
 
 ## app-identity
@@ -88,6 +88,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 3 | Optimize this loop, it is slow | trigger | | ok |
 | 4 | Write the CHANGELOG entry for this version | no | flow-delivery | ok |
 | 5 | Add a system tray icon with states | no | win-shell | ok |
+
 ## skill-authoring
 
 | # | request | expected | near-miss of | verdict |
@@ -128,6 +129,26 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 4 | Implement a dialog that closes on Esc | no | ui-dialogs | ok (Phase 6 dropped the word dialog) |
 | 5 | Make the tray icon 22 px | no | win-shell | ok |
 
+## ui-tray-animation
+
+| # | request | expected | near-miss of | verdict |
+|---|---|---|---|---|
+| 1 | Make the tray icon spin while the upload runs | trigger | | ok |
+| 2 | Animate a macOS menu-bar icon while syncing | trigger | | ok |
+| 3 | Keep the tray icon spinning during a long refresh | trigger | | ok |
+| 4 | Add a system tray icon with idle, busy and error states | no | win-shell | RISK (win-shell owns the state vocabulary) |
+| 5 | Draw the tray icon artwork and badge | no | ui-assets | RISK (both describe the badge) |
+
+## win-av-behaviour
+
+| # | request | expected | near-miss of | verdict |
+|---|---|---|---|---|
+| 1 | Bitdefender quarantined the exe we built | trigger | | ok |
+| 2 | The endpoint product kills the app seconds after it launches | trigger | | ok |
+| 3 | How do I report this build as a false positive? | trigger | | ok |
+| 4 | Build the one-file exe with PyInstaller | no | flow-delivery | ok |
+| 5 | Register Alt+Q as a global hotkey | no | win-shell | ok |
+
 ## win-shell
 
 | # | request | expected | near-miss of | verdict |
@@ -143,7 +164,10 @@ Verdicts below were judged against the descriptions in force when this file was 
 - No MISS remains. `code-sync` used to claim the client's Login panel, so request 5 fired
   both it and `ui-dialogs`; the Phase 6 rewrite removed that claim.
 - The remaining RISK rows are inherent to the subject matter - docs/CHANGELOG ownership,
-  tray artwork versus tray behaviour, and the default level firing unprompted - and are not
-  fixable by rewording.
+  tray artwork versus tray behaviour, tray states versus tray animation, and the default
+  level firing unprompted - and are not fixable by rewording.
+- Re-judged after the hotkey/documentation/packaging pass (no `WH_KEYBOARD_LL` hook, popup
+  minimum width and rotation, one level per request, one-file-only release): no `ok` turned
+  into a `RISK` or a `MISS`.
 - Re-judge this file after every description change, and revert any change that turns an
   `ok` into a `RISK` or `MISS`.

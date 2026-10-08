@@ -9,7 +9,7 @@ dropped into a skills directory and invoked when a new project is opened. Only
 **common** conventions are recorded here — anything unique to a single project was
 deliberately excluded.
 
-The 13 skills are named `<category>-<topic>` with approved prefixes `app-`, `ui-`,
+The 14 skills are named `<category>-<topic>` with approved prefixes `app-`, `ui-`,
 `code-`, `win-`, `flow-` and `skill-`. Most trigger automatically when the topic comes
 up; `flow-levels` is the one you select with a word you type.
 
@@ -22,33 +22,35 @@ code and reuse the same palette, dialogs and Win32 shell behaviour.
 |---|--------------|--------|
 | 1 | `app-identity/` | APP_NAME / APP_ID / APP_VERSION, vendor block, paths & `%APPDATA%` rules, `_MEIPASS` resources |
 | 2 | `app-structure/` | Repo layout: package folder + module names, sibling `docs/` `tests/` `tools/` `icons/`, entry points |
-| 3 | `ui-layout-theme/` | Dark-theme colour palette, Calibri fonts, shared layout metrics (padding, header heights, alpha) |
+| 3 | `ui-layout-theme/` | Dark-theme colour palette, Calibri fonts, shared layout metrics (padding, header heights, alpha), popup minimum width and rotation/DPI clamping |
 | 4 | `ui-assets/` | Close ✕ / flat / primary buttons, refresh spinner, tray state icons + badges, glyph symbols |
 | 5 | `ui-dialogs/` | Borderless dialog shell, the Login panel protocol, auto-hide behaviour |
 | 6 | `ui-tray-animation/` | Animated tray icon (idle / busy / ok / error) with a spinning badge, plus framework notes |
-| 7 | `win-shell/` | Tray, Alt+Q hotkey, single-instance mutex, AUMID toasts, popup menus, autostart |
-| 8 | `code-concurrency/` | Background worker + GUI polling discipline (never touch widgets off-thread) |
-| 9 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
-| 10 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
-| 11 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller packaging |
-| 12 | `flow-levels/` | The four work levels: baseline, optimize, commit, release |
-| 13 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
+| 7 | `win-shell/` | Tray, Alt+Q hotkey (no hook), single-instance mutex, AUMID toasts, popup menus, autostart, display-change re-placement |
+| 8 | `win-av-behaviour/` | Endpoint-security behaviour: the shapes an AV/EDR scores, what to do instead, how to verify a build and report a false positive |
+| 9 | `code-concurrency/` | Background worker + GUI polling discipline (never touch widgets off-thread) |
+| 10 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
+| 11 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
+| 12 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller one-file packaging |
+| 13 | `flow-levels/` | The four work levels: baseline, optimize, commit, release |
+| 14 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
 
 ## Workflow levels
 
 `flow-levels` sets *how much* work to do on a given request instead of *what* to do. It
-is the only skill here that is triggered by a word you type: pick **one** level, then
-follow only that section.
+is the only skill here that is triggered by a word you type: pick **one** level, and only
+that level's steps run — never mixed, and never escalated by asking.
 
 | Level | Trigger | Tests | Optimize perf + dead code | Clear cache | Docs | Commit | Push | Build |
 |---|---|---|---|---|---|---|---|---|
 | **baseline** | *(default — nothing typed)* | affected only | — | — | — | — | — | — |
 | **optimize** | `/optimize` or say `optimize` | full | yes | yes | — | — | — | — |
 | **commit** | `/commit` or say `commit` | full | — | yes | yes | yes | yes | — |
-| **release** | `/release [version]` or say `release` | — | — | — | — | — | — | yes |
+| **release** | `/release [version]` or say `release` | — | — | — | — | — | — | one file |
 
 `baseline` is what you get when no level word is typed (the skill historically called it
-`normal`). To move up a level, stop and ask instead of doing more than was requested.
+`normal`). **One level per request**: cline does only that level's steps. Moving up is never
+asked for — anything another level owns is left undone and named in one line.
 
 Clear-cache set for all levels: `__pycache__/`, `*.pyc`, `.pytest_cache/`,
 `.mypy_cache/`, `build/`, `dist/`.
@@ -64,7 +66,7 @@ any folder you open, with no per-project setup:
 powershell -NoProfile -ExecutionPolicy Bypass -File "<Access Lib>\tools\install-skills.ps1"
 ```
 
-The script locates the repository itself (no path to edit) and junctions all 13 skills
+The script locates the repository itself (no path to edit) and junctions all 14 skills
 into **both** roots Cline scans globally:
 
 | Root | Read by |
@@ -85,7 +87,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<Access Lib>\tools\validate
 ```
 
 Then reload VS Code and open Cline's **Skills** tab (the scale icon left of the model
-selector) to confirm all 13 skills are listed and enabled.
+selector) to confirm all 14 skills are listed and enabled.
 
 ### On this machine
 
@@ -124,7 +126,7 @@ registry still exists in its owner file.
 | nothing | `baseline` — fix the affected code, affected tests only, no docs/build/commit |
 | `/optimize` or `optimize` | optimize + dead-code cleanup + cache clear + full tests |
 | `/commit` or `commit` | cleanup + cache clear + full tests + docs + commit + push |
-| `/release` or `release` | build only — package the one-file exe |
+| `/release` or `release` | build only — one file: the single exe is the only artefact (no folder build) |
 
 The slash form is deterministic; the bare word relies on the trigger phrases folded into
 the skill's `description`, so check the Skills tab if a bare word ever fails to fire.

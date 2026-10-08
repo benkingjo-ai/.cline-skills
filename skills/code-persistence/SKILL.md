@@ -22,7 +22,7 @@ def log(*args):
 
 | Property | Rule |
 |---|---|
-| Location | `%APPDATA%\<APP_ID>\<app>.log` |
+| Location | `%APPDATA%\<APP_ID>\<app>.log`, else the first folder that accepts it (section 5) |
 | Format | timestamped — `[%Y-%m-%d %H:%M:%S] msg` (or a leading stamp) |
 | Cap | `LOG_MAX_BYTES` (256 KB or 512 KB) |
 | Rotation | rotate **before** a line would pass the cap → `log.1` (only two files kept) |
@@ -65,3 +65,22 @@ Accept whatever the user wrote down — **read only, never move/change/copy**:
    `tools/release_check.py` (nothing inside the built exe may match).
 4. Plain-text storage is an accepted, documented level of protection — say so in the
    settings docstring.
+
+## 5. Refused filenames
+
+Measured on a managed endpoint: `%APPDATA%\<APP_ID>\settings.ini` and the log
+beside it were refused, `[Errno 13] Permission denied` on create and `[WinError 5]`
+on `os.replace`, while `plain.ini`, `plain.log` and `x.txt` in that same folder
+wrote normally - and so did the same two filenames in `%LOCALAPPDATA%` and `%TEMP%`.
+The veto was on the app’s **own filenames in one folder**, not on the extension and
+not on the folder’s permissions.
+
+- Ask each folder in turn (`%APPDATA%`, then `%LOCALAPPDATA%`, then `%TEMP%`) and
+  write to the first that accepts the file; read the newest copy that exists, so a
+  leftover file in an earlier folder cannot shadow the live one.
+- Write to the file that was read first, then the rest of the list: a read path and
+  a write path that disagree make a saved setting look lost.
+- Keep the same filename and format - a sanctioned per-user location, not a rename -
+  and report which file is in use (`--debug`, or the panel that failed).
+- Record the failure reason (the path plus the system’s own words) and show it.  A log
+  that cannot be written must never leave the app silent about why.

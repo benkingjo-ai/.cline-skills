@@ -1,6 +1,6 @@
 ---
 name: ui-layout-theme
-description: Apply the house dark theme: colour palette, Calibri fonts, and the shared layout metrics (padding, button widths, header heights, window alpha). Use when styling a window, panel or button, choosing colours or fonts, or creating theme.py.
+description: Apply the house dark theme in theme.py: colour palette, Calibri fonts, layout metrics (padding, button widths, header heights, alpha), plus the popup minimum width and rotation/DPI clamping. Use when styling a window or panel.
 ---
 
 # Layout — Colour, Font, Size
@@ -63,6 +63,24 @@ panel matches"*. Copy them verbatim; centralise them in `theme.py` (or `config.p
 Size ownership: the `ICON_BTN` / `REFRESH_BTN` values above are the button *boxes*. The
 refresh *glyph* inside is derived by the `ui-assets` skill (icon size x 0.85, so
 `BAR_ICON_PX` 22 gives 19 px). This file owns the boxes; `ui-assets` owns the glyph.
+
+## Screen rotation & scaling
+
+The panel is **placed from the live work area, never from a cached rectangle**: a rotation
+(portrait to landscape), a resolution change, a DPI change or a moved taskbar invalidates both
+the tray rect and the work rect. The reaction is owned by the `win-shell` skill
+(*Display change*); the values below are owned here.
+
+| Token | Value | Rule |
+|---|---|---|
+| `POPUP_MIN_WIDTH` | 260 px | the panel never gets narrower than this, however narrow the screen is |
+| `POPUP_WIDTH` | `work_w * POPUP_WIDTH_FRACTION` | then clamped to `POPUP_MIN_WIDTH` .. `work_w - 2 * POPUP_EDGE_MARGIN` |
+| `DPI_BASE` | 96 | every px metric on this page is scaled by `dpi / DPI_BASE` before use |
+
+- **Portrait is the case that breaks**: 1/5 of a 1080-wide work area is 216 px, so
+  `POPUP_MIN_WIDTH` wins, and the edge margin is given up before the panel is allowed to
+  leave the work area.
+- Recompute on every display change — never reuse a width or an anchor measured at startup.
 
 ## Code
 

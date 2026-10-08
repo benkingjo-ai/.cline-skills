@@ -1,6 +1,6 @@
 ---
 name: ui-assets
-description: Build buttons, icons and tray artwork: the red ✕ CloseButton, flat and primary buttons, the baked-frame refresh spinner, tray state icons with badges, app icons, and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
+description: Build buttons, icons and tray artwork: the red ✕ CloseButton, flat and primary buttons, the baked-frame refresh spinner, tray state icons with badges and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
 ---
 
 # Assets — Buttons, Icons, Symbols
@@ -42,8 +42,9 @@ aligns.
 
 - `<App>.ico` + `<App>.png` in `icons/` (or `assets/app`, `assets/icons`).
 - `resource_path()` / `icon_path()` are the PyInstaller `_MEIPASS`-aware path helpers, owned by the `app-identity` skill.
-- Copy the icon into `%APPDATA%` (`stable_icon_path()`, see `app-identity`) so it survives a one-file build's
-  temporary unpack.
+- `stable_icon_path()` is owned by the `win-shell` skill: it is the **only** copy of the
+  `.ico` into `%APPDATA%`, it happens **only** when the build unpacks to a temporary folder,
+  and a machine that refuses the filename is reported rather than fought.
 
 ## Symbols (used verbatim across projects)
 
