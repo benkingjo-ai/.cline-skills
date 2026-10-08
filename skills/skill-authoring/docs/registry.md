@@ -37,9 +37,8 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Completion gate` | skill-authoring | SKILL.md | all skills |
 | `State colours` | win-shell | SKILL.md | ui-assets, ui-tray-animation |
 | `Autostart` | win-shell | SKILL.md | app-identity |
-| `Scored behaviours` | win-av-behaviour | SKILL.md | win-shell, flow-delivery, code-persistence |
-| `One-file only` | flow-delivery | SKILL.md | win-av-behaviour, flow-levels, app-structure |
-| `Refused filenames` | code-persistence | SKILL.md | win-av-behaviour |
+| `One-file only` | flow-delivery | SKILL.md | flow-levels, app-structure |
+| `Refused filenames` | code-persistence | SKILL.md | win-shell |
 | `POPUP_MIN_WIDTH` | ui-layout-theme | SKILL.md | ui-dialogs, win-shell |
 | `Display change` | win-shell | SKILL.md | ui-layout-theme, ui-dialogs |
 <!-- registry:end -->

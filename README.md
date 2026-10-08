@@ -9,7 +9,7 @@ dropped into a skills directory and invoked when a new project is opened. Only
 **common** conventions are recorded here — anything unique to a single project was
 deliberately excluded.
 
-The 14 skills are named `<category>-<topic>` with approved prefixes `app-`, `ui-`,
+The 13 skills are named `<category>-<topic>` with approved prefixes `app-`, `ui-`,
 `code-`, `win-`, `flow-` and `skill-`. Most trigger automatically when the topic comes
 up; `flow-levels` is the one you select with a word you type.
 
@@ -27,13 +27,12 @@ code and reuse the same palette, dialogs and Win32 shell behaviour.
 | 5 | `ui-dialogs/` | Borderless dialog shell, the Login panel protocol, auto-hide behaviour |
 | 6 | `ui-tray-animation/` | Animated tray icon (idle / busy / ok / error) with a spinning badge, plus framework notes |
 | 7 | `win-shell/` | Tray, Alt+Q hotkey (no hook), single-instance mutex, AUMID toasts, popup menus, autostart, display-change re-placement |
-| 8 | `win-av-behaviour/` | Endpoint-security behaviour: the shapes an AV/EDR scores, what to do instead, how to verify a build and report a false positive |
-| 9 | `code-concurrency/` | Background worker + GUI polling discipline (never touch widgets off-thread) |
-| 10 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
-| 11 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
-| 12 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller one-file packaging |
-| 13 | `flow-levels/` | The four work levels: baseline, optimize, commit, release |
-| 14 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
+| 8 | `code-concurrency/` | Background worker + GUI polling discipline (never touch widgets off-thread) |
+| 9 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
+| 10 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
+| 11 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller one-file packaging |
+| 12 | `flow-levels/` | The four work levels: baseline, optimize, commit, release |
+| 13 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
 
 ## Workflow levels
 
@@ -66,7 +65,7 @@ any folder you open, with no per-project setup:
 powershell -NoProfile -ExecutionPolicy Bypass -File "<Access Lib>\tools\install-skills.ps1"
 ```
 
-The script locates the repository itself (no path to edit) and junctions all 14 skills
+The script locates the repository itself (no path to edit) and junctions all 13 skills
 into **both** roots Cline scans globally:
 
 | Root | Read by |
@@ -87,7 +86,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<Access Lib>\tools\validate
 ```
 
 Then reload VS Code and open Cline's **Skills** tab (the scale icon left of the model
-selector) to confirm all 14 skills are listed and enabled.
+selector) to confirm all 13 skills are listed and enabled.
 
 ### On this machine
 

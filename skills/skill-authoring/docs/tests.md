@@ -1,6 +1,6 @@
 # Trigger tests
 
-Test corpus for the 14 skill trigger descriptions. For each skill: **three requests that
+Test corpus for the 13 skill trigger descriptions. For each skill: **three requests that
 should trigger it** and **two that must not**. At least one "must not" per skill is a
 near-miss aimed at a sibling skill's vocabulary, to catch descriptions that are too broad.
 
@@ -15,7 +15,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 64 |
+| ok | 59 |
 | RISK | 6 |
 | MISS | 0 |
 
@@ -139,16 +139,6 @@ Verdicts below were judged against the descriptions in force when this file was 
 | 4 | Add a system tray icon with idle, busy and error states | no | win-shell | RISK (win-shell owns the state vocabulary) |
 | 5 | Draw the tray icon artwork and badge | no | ui-assets | RISK (both describe the badge) |
 
-## win-av-behaviour
-
-| # | request | expected | near-miss of | verdict |
-|---|---|---|---|---|
-| 1 | Bitdefender quarantined the exe we built | trigger | | ok |
-| 2 | The endpoint product kills the app seconds after it launches | trigger | | ok |
-| 3 | How do I report this build as a false positive? | trigger | | ok |
-| 4 | Build the one-file exe with PyInstaller | no | flow-delivery | ok |
-| 5 | Register Alt+Q as a global hotkey | no | win-shell | ok |
-
 ## win-shell
 
 | # | request | expected | near-miss of | verdict |
@@ -163,6 +153,9 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 - No MISS remains. `code-sync` used to claim the client's Login panel, so request 5 fired
   both it and `ui-dialogs`; the Phase 6 rewrite removed that claim.
+- The `win-av-behaviour` rows left with the skill; its rules now live inline in the skills
+  whose behaviour they justify - `win-shell` (hotkey, autostart), `flow-delivery` (packaging)
+  and `code-persistence` (refused filenames).
 - The remaining RISK rows are inherent to the subject matter - docs/CHANGELOG ownership,
   tray artwork versus tray behaviour, tray states versus tray animation, and the default
   level firing unprompted - and are not fixable by rewording.

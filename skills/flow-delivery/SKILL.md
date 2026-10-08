@@ -50,15 +50,14 @@ from (e.g. *"manual 11.1"*, *"Sheets spec 14.3"*).
 
 ## 4. Packaging & release
 
-- **PyInstaller** one-file; `<App>.spec` reads `APP_VERSION` for the exe Details tab —
-  never hand-type the version in two places.
-- **One-file only**: the release artefact is a single `<App>.exe`, and a one-folder build
-  (`--onedir`) is **never** released or handed to a user - at most it is a temporary
-  diagnostic against a scanning endpoint. A one-file build unpacks its runtime into `%TEMP%\_MEIxxxxxx`
-  and executes from there. That staging shape is scored by a behaviour-scoring product, so
-  remove the scored behaviours around it (owner: `win-av-behaviour`, **Scored behaviours**)
-  rather than change the layout. Give the build script switches for the interpreter and the
-  output folder, and clear a held previous build by hydrating its placeholder files before
+- **One-file only**: the release artefact is a single `<App>.exe`; `<App>.spec` reads
+  `APP_VERSION` for the exe Details tab — never hand-type the version in two places. A
+  one-folder build (`--onedir`) is **never** released or handed to a user - at most it is a
+  temporary diagnostic against a scanning endpoint. A one-file build unpacks its runtime into `%TEMP%\_MEIxxxxxx`
+  and executes from there. That staging shape is what a behaviour-scoring endpoint product
+  reads as a dropper, so keep the rest of the ship-out free of scored behaviour rather than
+  change the layout. Give the build script switches for the interpreter and the output
+  folder, and clear a held previous build by hydrating its placeholder files before
   retrying: a synced folder such as OneDrive leaves read-only placeholders that
   refuse deletion.
 - `build.ps1` (or `run.cmd`) builds; output in `dist/`.

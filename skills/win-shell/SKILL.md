@@ -19,8 +19,7 @@ description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey wi
 ## 2. Global hotkey — **Alt+Q**
 
 `RegisterHotKey` **only**. There is no `WH_KEYBOARD_LL` hook: a global low-level keyboard
-hook is a scored keylogger signature and this app never needs one (the reasoning is owned by
-`win-av-behaviour`, *Scored behaviours*).
+hook is the keylogger signature an endpoint product scores, and this app never needs one.
 
 | Step | Call | Notes |
 |---|---|---|
@@ -54,10 +53,11 @@ def acquire_single_instance() -> bool:
    exists** (the shell reads it once at startup).
 2. `register()` → write `DisplayName` + `IconUri` under
    `HKCU\Software\Classes\AppUserModelId\<AUMID>` — idempotent, by value.
-3. `stable_icon_path()` copies the `.ico` into `%APPDATA%` **only** when the build
-   unpacks to a temporary folder; a build with its own folder returns its own icon,
-   and a machine that refuses that filename is reported instead of fought (see the
-   `win-av-behaviour` skill).
+3. `stable_icon_path()` copies the `.ico` into `%APPDATA%` **only** when the build unpacks
+   to a temporary folder (a released one-file build always does); it is the **one** self-copy
+   the app makes - written only when the file is missing or stale, never on every launch - and
+   a machine that refuses that filename is reported instead of fought (the fallback rule is
+   owned by the `code-persistence` skill).
 4. Send the toast through the same AUMID with a `ToastGeneric` XML payload.
 5. `init_apartment()` once per process (STA, fall back to MTA) before the first WinRT call.
 6. **Best-effort and quiet**: a failure logs `[APPID] …` and never stops the app starting
@@ -89,5 +89,4 @@ def acquire_single_instance() -> bool:
 - `startup.py` (`python -m <pkg>.startup` / `--remove`): a Task Scheduler `ONLOGON` task with a short delay, falling back to the `HKCU\...\CurrentVersion\Run` key.
 - Both are scoped to the current user; no elevation is required.
 - **User opt-in only**: a launch never writes the entry itself - self-registering
-  persistence is one of the behaviours an endpoint product scores (see
-  `win-av-behaviour`).
+  persistence is one of the behaviours an endpoint product scores.
