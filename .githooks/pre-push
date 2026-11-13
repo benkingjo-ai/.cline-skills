@@ -1,6 +1,6 @@
 #!/bin/sh
 # Push remote guard - this library is pushed only to the benkingjo-ai account.
-# Installed as .git/hooks/pre-push by install-hook.ps1.
+# Installed as .githooks/pre-push; activated by core.hooksPath (install-hook.ps1).
 # Rule anchor: Push remote guard.
 # Git calls this with $1 = remote name, $2 = remote URL.
 # This file must stay LF: see .gitattributes.

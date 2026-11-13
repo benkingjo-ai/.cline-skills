@@ -24,7 +24,7 @@ poll with after()/QTimer  except: self._result = (False, str(exc))
 
 | # | Rule |
 |---|---|
-| 1 | Work runs on `threading.Thread(target=work, daemon=True)` — never on the GUI thread. |
+| 1 | Work runs on `threading.Thread(target=work, daemon=True)` — never on the GUI thread; share `stop_event = threading.Event()` so the GUI can cancel. |
 | 2 | The worker **only records its result**; it never touches a widget, never calls Tk/Qt. |
 | 3 | The GUI polls (`after(...)` in Tk, `QTimer` in Qt) and is the only place widgets change. |
 | 4 | Init the result to `None` before starting; the worker must always set it (catch every exception) so the poller can never spin forever. |
@@ -32,6 +32,7 @@ poll with after()/QTimer  except: self._result = (False, str(exc))
 | 6 | **Bound every call** — explicit timeout and a retry cap, so a black-holed connection can't hang or bill. |
 | 7 | Disable the action button while in flight; re-enable when the answer lands. |
 | 8 | **No timer outlives its window**: stop/cancel them in `done()`, `_close()` or `<Destroy>`, and guard `winfo_exists()` / `isinstance` before touching a widget. |
+| 9 | **Stop event**: `stop_event = threading.Event()` — set before the worker exits; the GUI cancels its poll on window close. |
 | 9 | Never trust the last event: re-read hard evidence (pointer position, foreground window, window existence) **at the moment it matters**, not from a remembered event. |
 | 10 | Anything unreadable counts as the **safe side** (hide, don't show; skip, don't send). |
 

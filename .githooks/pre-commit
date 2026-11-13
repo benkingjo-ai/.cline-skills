@@ -1,6 +1,6 @@
 #!/bin/sh
 # Skills check - blocks the commit when the library is not clean.
-# Installed as .git/hooks/pre-commit by install-hook.ps1.
+# Installed as .githooks/pre-commit; activated by core.hooksPath (install-hook.ps1).
 # This file must stay LF: see .gitattributes.
 SCRIPT="skills/skill-authoring/scripts/check-skills.ps1"
 if [ ! -f "$SCRIPT" ]; then

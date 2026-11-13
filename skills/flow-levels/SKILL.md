@@ -16,7 +16,7 @@ task seems to need.
 - Stop-and-report - never a question - only for: a red test run, a change unrelated to the
   task, a rejected push, or a step this command requires that cannot be completed.
 
-## The four commands
+## The four commands (and their two version variants)
 
 | Command | Typed | Steps, in order | Version | Never does |
 |---|---|---|---|---|
@@ -39,7 +39,7 @@ and named in one line - never asked about.
 | **C** | **full test** | run the **entire** suite and report pass/fail counts; a failure stops the command | `flow-delivery`, *Testing* |
 | **D** | **build** | PyInstaller **one-file** exe into `dist/` | `flow-delivery`, *One-file only* |
 | **E** | **docs** | match `README.md`, `CHANGELOG.md` (keep-a-changelog) and `docs/` to the code | `flow-delivery` §1, *Documentation* |
-| **F** | **push** | stage the intended changes, write a clear message, commit, push the branch to its upstream | this skill |
+| **F** | **push** | review `git status --porcelain`, stage the intended changes, write a clear message, commit, push the branch to its upstream | this skill |
 
 ## Clear cache set
 
@@ -104,3 +104,6 @@ The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per 
   push another branch. With no upstream, or a push rejected (auth, non-fast-forward), **stop and
   report** - do not force.
 - No build or package: no PyInstaller, no `build.ps1`, no `dist/`.
+- **Pre-flight git status**: run `git status --porcelain` before the bump. Untracked
+  scratch/debug artefacts (`.md`, `.tmp`, `.log`, `.bak`) are named and left out of the
+  commit — never swept in by `git add -A`.

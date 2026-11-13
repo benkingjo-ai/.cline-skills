@@ -33,6 +33,12 @@ hook is the keylogger signature an endpoint product scores, and this app never n
 - `active` must check the **thread is alive and the last register succeeded** — Windows
   silently drops a registration across sleep/resume.
 
+## Teardown (normal or abnormal exit)
+
+- `UnregisterHotKey(hwnd, HOTKEY_ID)` and `CloseHandle` on the single-instance mutex —
+  via `atexit` / `try…finally`. A crashed instance must still release the mutex so a
+  second launch can acquire it.
+
 ## 3. Single-instance guard
 
 ```python

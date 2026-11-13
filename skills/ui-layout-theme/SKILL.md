@@ -84,7 +84,8 @@ the tray rect and the work rect. The reaction is owned by the `win-shell` skill
 
 ## Code
 
-Tk — put in `theme.py` / `config.py` and read it everywhere:
+Tk — put colours, fonts and metrics in `theme.py` (or `constants.py`) and read them
+everywhere:
 
 ```python
 BG    = "#121212"

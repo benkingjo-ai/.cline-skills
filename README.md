@@ -23,15 +23,15 @@ code and reuse the same palette, dialogs and Win32 shell behaviour.
 | 1 | `app-identity/` | APP_NAME / APP_ID / APP_VERSION, vendor block, paths & `%APPDATA%` rules, `_MEIPASS` resources |
 | 2 | `app-structure/` | Repo layout: package folder + module names, sibling `docs/` `tests/` `tools/` `icons/`, entry points |
 | 3 | `ui-layout-theme/` | Dark-theme colour palette, Calibri fonts, shared layout metrics (padding, header heights, alpha), popup minimum width and rotation/DPI clamping |
-| 4 | `ui-assets/` | Close ✕ / flat / primary buttons, refresh spinner, tray state icons + badges, glyph symbols |
+| 4 | `ui-assets/` | Native Windows icons, Segoe glyph fonts, glyph symbols |
 | 5 | `ui-dialogs/` | Borderless dialog shell, the Login panel protocol, auto-hide behaviour |
 | 6 | `ui-tray-animation/` | Animated tray icon (idle / busy / ok / error) with a spinning badge, plus framework notes |
-| 7 | `win-shell/` | Tray, Alt+Q hotkey (no hook), single-instance mutex, AUMID toasts, popup menus, autostart, display-change re-placement |
+| 7 | `win-shell/` | Tray, Alt+Q hotkey (no hook), single-instance mutex, AUMID toasts, popup menus, autostart, display-change re-placement, deterministic teardown |
 | 8 | `code-concurrency/` | Background worker + GUI polling discipline (never touch widgets off-thread) |
 | 9 | `code-persistence/` | `settings.ini`, credentials parsing, secret hygiene, file logging |
 | 10 | `code-sync/` | Google Apps Script web-app contract (`docs/Code.gs`) |
 | 11 | `flow-delivery/` | README/CHANGELOG conventions, GUI-free pytest tests, `tools/` probes, PyInstaller one-file packaging |
-| 12 | `flow-levels/` | The four work commands: code edit, clean up, build, push |
+| 12 | `flow-levels/` | The four work commands: code edit, clean up, build, push (+ `push-minor` / `push-master`), version bumps |
 | 13 | `skill-authoring/` | Governs this library: naming, frontmatter, rule registry, `check-skills.ps1` |
 
 ## Workflow commands
@@ -113,8 +113,9 @@ selector) to confirm all 13 skills are listed and enabled.
 - `link-cline-skills.bat` (next to this README) creates the `~/.cline\skills` junction
   onto this `skills\` folder, backing up anything already there.
 - `skills\bootstrap.ps1` finishes setup: it **verifies** that junction (it never creates
-  it), installs the pre-commit hook, runs `skills\check.bat`, and prints the Cline
-  settings you still have to set by hand. Pass `-DryRun` to print every action first.
+  it), **activates the tracked `.githooks/` hooks** (`core.hooksPath`): `pre-commit` runs the
+  skills audit and blocks a dirty commit, `pre-push` refuses any remote but `benkingjo-ai`;
+  runs `skills\check.bat`, and prints the Cline settings you still have to set by hand.
 
 ### Editing the library
 

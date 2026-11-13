@@ -31,7 +31,13 @@ implementation; the [framework notes](docs/frameworks.md) cover the other stacks
 Ask a question only if the framework or OS is unclear and cannot be inferred from the
 project. Otherwise state the assumption in one line and proceed.
 
-## State model
+## Screen & idle caps
+
+- **Never faster than 80 ms / 12 FPS.** (`frame_seconds` defaults to 0.10.) An
+  always-moving icon wastes CPU; idle must cost almost nothing.
+- **Stop the animator the moment the state returns to `idle`** — timer cancelled,
+  no redundant icon updates.
+- Frames are generated **once at startup in memory**, never drawn per frame from disk.
 
 Use four states. They map to what users need to know at a glance.
 

@@ -25,8 +25,9 @@ def log(*args):
 | Location | `%APPDATA%\<APP_ID>\<app>.log`, else the first folder that accepts it (section 5) |
 | Format | timestamped — `[%Y-%m-%d %H:%M:%S] msg` (or a leading stamp) |
 | Cap | `LOG_MAX_BYTES` (256 KB or 512 KB) |
-| Rotation | rotate **before** a line would pass the cap → `log.1` (only two files kept) |
+| Rotation | `RotatingFileHandler(maxBytes=LOG_MAX_BYTES, backupCount=1)` → `log.1` (only two files kept) |
 | Cost | check size every N messages, not every line |
+| Atomic save | write `settings.ini.tmp` first, finalise with `os.replace()`; if the endpoint refuses `os.replace()` (`[WinError 5]`, section 5), write directly and report the refusal — never lose the setting |
 | Run bracketing | `announce_start()` (names build + frozen/exe), `announce_stop()` |
 | Failures | best-effort: **never raise** |
 

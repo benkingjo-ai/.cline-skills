@@ -110,7 +110,7 @@ else {
 }
 
 Write-Output ''
-Write-Output '== 2. pre-commit hook =='
+Write-Output '== 2. Git hooks (core.hooksPath) =='
 if ($DryRun) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $InstallHook -DryRun
 }

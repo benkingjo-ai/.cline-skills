@@ -1,6 +1,6 @@
 ---
 name: ui-assets
-description: Build buttons, icons and tray artwork: the red ✕ CloseButton, flat and primary buttons, the baked-frame refresh spinner, tray state icons with badges and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
+description: Build buttons, icons and tray artwork from Windows stock assets and in-memory compositing: stock icons, Segoe glyph fonts and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
 ---
 
 # Assets — Buttons, Icons, Symbols
@@ -17,34 +17,41 @@ description: Build buttons, icons and tray artwork: the red ✕ CloseButton, fla
 Rule: Add and Cancel are built with the same width and padding, so the pair always
 aligns.
 
-## Refresh spinner
+## Stock Windows icons (the rule)
 
-- White circular arrow = an open arc + a small arrow head.
-- **8 frames, 45° apart, 90 ms per frame** (`REFRESH_SPIN_FRAMES`, `REFRESH_SPIN_MS`).
-- Tk cannot rotate a `PhotoImage`, so the frames are baked and swapped; when no artwork
-  ships, the arc's start angle is rotated instead as a fallback.
-- Shipped assets: `refresh.png` (rest face) + `refresh-1..7.png` + `refresh.ico`,
-  generated at 2× by `tools/make_icons.py` from `art/<App> master.png`.
-- Derived size: refresh glyph = icon size × 0.85 (e.g. `BAR_ICON_PX=22` → 19 px).
+Native first. Every icon, badge and glyph is either a Windows stock asset or drawn
+in memory from the brand `.ico`; the only image the project ships is its own brand
+`.ico` (see `win-shell`, *stable_icon_path*). Per-state `.ico` files, `refresh-*.png`
+artwork and `tools/make_icons.py` are retired.
+
+| Stack | Call |
+|---|---|
+| Win32 | `SHGetStockIconInfo` / `LoadIconW` (`shell32.dll`, `user32.dll`) |
+| Qt | `QStyle.StandardPixmap` |
+| Tk | system bitmaps |
+
+- Destroy every icon handle after use; never leak GDI objects.
+- Colours come from palette tokens (`ui-layout-theme`), never hard-coded.
+
+## Glyphs and fonts
+
+- `Segoe Fluent Icons` → `Segoe MDL2 Assets` → `Segoe UI Symbol` (first installed
+  font wins).
+- `\u2715` close ✕, `\u2713` verified ✓, `\u21BB` refresh ↻, `\u25B2`/`\u25BD` up/down.
 
 ## Tray icons
 
-- One `.ico` per state: `tray-sleep.ico` (idle), `tray-sync.ico` (busy), `tray-error.ico` (error). The canonical state vocabulary is `idle` / `busy` / `error` (see the `win-shell` skill); the filenames stay as shipped.
-- State colours are the palette tokens `DIM` (idle) / `OK` (busy) / `ERROR` (error). Values are owned by the `ui-layout-theme` skill, not new colour names.
-- Badge = the tinted refresh glyph on the `BG` disc (palette token, see `ui-layout-theme`), occupying **0.75** of the frame
-  (`TRAY_BADGE_FRACTION`), rendered at sizes `(16, 22, 24, 32, 48)` — each size drawn
-  independently, never a shrunk 256 px canvas.
+- States `idle` / `busy` / `ok` / `error` (vocabulary owned by `win-shell`).
+- **Native assets**: each state is the brand `.ico` composited **in memory at startup**:
+  state badge (0.75 of the frame, tinted `DIM` / `OK` / `ERROR`) on the brand icon. Render
+  each size once (`16`, `22`, `24`, `32`, `48 px`) — never shrink a 256 px canvas.
 - Only touch the shell when the state actually changes.
-- Tooltips short (Windows truncates ~127 chars); prefer shapes over colour so state
-  survives colour-blind users and monochrome menu bars.
 
-## App icon files
+## Refresh spinner
 
-- `<App>.ico` + `<App>.png` in `icons/` (or `assets/app`, `assets/icons`).
-- `resource_path()` / `icon_path()` are the PyInstaller `_MEIPASS`-aware path helpers, owned by the `app-identity` skill.
-- `stable_icon_path()` is owned by the `win-shell` skill: it is the **only** copy of the
-  `.ico` into `%APPDATA%`, it happens **only** when the build unpacks to a temporary folder,
-  and a machine that refuses the filename is reported rather than fought.
+- One arc badge drawn in memory and rotated per frame (`\u21BB` refresh ↻ or a
+  270° arc, 2 px thick, `BAR_ICON_PX` × 0.85).
+- 8–12 frames at 80–120 ms (see `ui-tray-animation`); never drawn per frame from disk.
 
 ## Symbols (used verbatim across projects)
 

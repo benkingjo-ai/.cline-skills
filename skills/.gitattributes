@@ -1,3 +1,2 @@
 * text=auto eol=crlf
-skill-authoring/scripts/pre-commit text eol=lf
 skill-authoring/scripts/pre-push text eol=lf

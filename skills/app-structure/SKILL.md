@@ -14,7 +14,8 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
 |---|---|---|
 | `README.md` | product doc entry point | links to `docs/<App>.md` or `docs/ARCHITECTURE.md` |
 | `CHANGELOG.md` | keep-a-changelog | version lives in `config.py` |
-| `requirements.txt` | pip deps | or `pyproject.toml` (src layout) |
+| `requirements.txt` | pip deps | one line per dependency; no version pins unless a wheel forces otherwise |
+| `.gitignore` | baseline | `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.mypy_cache/`, `build/`, `dist/`, `build/*.spec`, `*.ini`, `*.log`, `desktop.ini` |
 | `run_app.py` | launch from source | Parleyra uses `main.py`; packages use `__main__.py` |
 | `<App>.spec` | PyInstaller spec | one-file |
 | `build.ps1` / `run.cmd` | build/run script | |
@@ -52,12 +53,13 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
 | `tests/` | `test_*.py` (pytest) |
 | `tools/` | `spike_*.py`, `verify_app.py`, `release_check.py`, `make_icons.py`, `drive_*.py` - conventions owned by the `flow-delivery` skill |
 | `icons/` or `assets/app`, `assets/icons` | shipped `.ico` / `.png` |
-| `art/` | source artwork master |
+| `art/` | source artwork master (brand icon only; per-state assets are generated in memory — see `ui-assets`) |
 | `scripts/` | `*.ps1` setup/run scripts |
 | `dist/`, `build/`, `release/` | build output, release bundles |
 
 ## Rules
 
+- **Baseline .gitignore** — the excludes in the table above; copy them into every new project.
 - **One concern per module**; a module that grows unreadable is split into mixins
   (e.g. `popup_timers.py`) rather than allowed to sprawl.
 - **Constants never scattered** — a magic number belongs in `config.py`/`theme.py`.

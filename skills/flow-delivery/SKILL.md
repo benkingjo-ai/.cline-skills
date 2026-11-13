@@ -60,7 +60,8 @@ from (e.g. *"manual 11.1"*, *"Sheets spec 14.3"*).
   folder, and clear a held previous build by hydrating its placeholder files before
   retrying: a synced folder such as OneDrive leaves read-only placeholders that
   refuse deletion.
-- `build.ps1` (or `run.cmd`) builds; output in `dist/`.
+- `--exclude-module` for unused heavy packages during the one-file build; minimise `.exe`
+  size and startup latency.
 - `release/` holds `<App>-<ver>.bundle.sha256.txt`.
 - **Put the venv outside the repo** — PySide6/PyQt unpacks deeply nested paths and
   Windows' 260-char limit breaks pip under a long OneDrive checkout (e.g. `D:\gv`).

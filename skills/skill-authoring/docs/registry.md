@@ -29,8 +29,6 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Secret hygiene` | code-persistence | SKILL.md | ui-dialogs, code-sync |
 | `The four commands` | flow-levels | SKILL.md | - |
 | `Clear cache set` | flow-levels | SKILL.md | - |
-| `Version bumps` | flow-levels | SKILL.md | flow-delivery |
-| `Push remote guard` | skill-authoring | scripts/pre-push | flow-levels |
 | `Package (lowercase = app name)` | app-structure | SKILL.md | flow-delivery |
 | `Documentation` | flow-delivery | SKILL.md | app-structure, win-shell |
 | `Testing` | flow-delivery | SKILL.md | win-shell |
@@ -43,6 +41,13 @@ the owner file. Keep it verbatim. `file` is relative to the owner skill folder.
 | `Refused filenames` | code-persistence | SKILL.md | win-shell |
 | `POPUP_MIN_WIDTH` | ui-layout-theme | SKILL.md | ui-dialogs, win-shell |
 | `Display change` | win-shell | SKILL.md | ui-layout-theme, ui-dialogs |
+| `Version bumps` | flow-levels | SKILL.md | flow-delivery |
+| `Push remote guard` | skill-authoring | SKILL.md | flow-levels |
+| `Git hooks` | skill-authoring | SKILL.md | flow-levels |
+| `Native assets` | ui-assets | SKILL.md | win-shell, ui-tray-animation |
+| `Baseline .gitignore` | app-structure | SKILL.md | - |
+| `Atomic save` | code-persistence | SKILL.md | - |
+| `Pre-flight git status` | flow-levels | SKILL.md | - |
 <!-- registry:end -->
 
 ## Flags

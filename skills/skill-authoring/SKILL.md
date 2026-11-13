@@ -76,6 +76,16 @@ naming anything; `scripts/check-skills.ps1` enforces the list.
 - No secrets or personal data. Write global skills in general terms; project-specific
   details do not belong in them.
 
+## Git hooks
+
+Two tracked hooks live in `.githooks/` and are activated by `core.hooksPath`
+(run `skills\skill-authoring\scripts\install-hook.ps1` once per clone):
+
+- `.githooks/pre-commit` — runs `check-skills.ps1` and blocks the commit when the
+  library is not clean.
+- `.githooks/pre-push` — **Push remote guard**: refuses any push whose remote URL is not
+  the `benkingjo-ai` account, so a manual `git push` elsewhere is blocked too.
+
 ## Conflicts and overlap
 
 - **One rule, one owner.** When a rule (naming, path, colour, format, timing) appears in

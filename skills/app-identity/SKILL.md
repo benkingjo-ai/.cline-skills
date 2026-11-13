@@ -50,8 +50,11 @@ SETTINGS_FILE = os.path.join(APP_DIR, "settings.ini")
 
 ## 3. Standard helpers in `config.py`
 
-- `app_dir()` — create `%APPDATA%\<APP_ID>` and return it.
-- `resource_path()` / `icon_path()` — bundled resource lookup.
+- `resource_path(rel)` — `os.path.join(getattr(sys, "_MEIPASS", PROJECT_ROOT), rel)`;
+  bundled-copy lookup: the unpacked temp dir at run time, the repo at development time.
+- `app_dir()` — `os.path.join(os.environ.get("APPDATA", tempfile.gettempdir()), APP_ID)`;
+  `makedirs(..., exist_ok=True)`; created on first use.
+- `icon_path(name)` — `resource_path()` for `ICON_DIR_NAME` / `ICON_ICO_NAME`.
 - `migrate_legacy()` — copy (never move) an old brand's files into `APP_DIR`, leaving a
   `migrated_from_<id>.txt` marker so it runs once per brand; never overwrite a file that
   is already there.

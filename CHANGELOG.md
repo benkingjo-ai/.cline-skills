@@ -3,6 +3,42 @@
 All notable changes to this skills library. Format: keep-a-changelog. The version lives in
 `VERSION` - one place, bumped by the `push` commands (see the `flow-levels` skill).
 
+## [2.0.0] - 2026-11-13
+
+### Breaking
+
+- **Assets are native.** `ui-assets` now builds chrome from Windows stock icons
+  (`SHGetStockIconInfo` / `LoadIconW` / `QStyle.StandardPixmap`), the Segoe glyph font stack
+  (`Segoe Fluent Icons` -> `Segoe MDL2 Assets` -> `Segoe UI Symbol`) and Unicode escapes;
+  tray state badges are composited in memory. Per-state `.ico` files, `refresh-*.png` frames,
+  the `art/` master pipeline and `tools/make_icons.py` are retired - the brand `.ico` is the
+  only image a project ships.
+- **Git hooks moved** into the tracked `.githooks/` folder, activated by `core.hooksPath`
+  (`install-hook.ps1`). Nothing is copied into `.git` any more.
+
+### Added
+
+- `app-identity`: ready-to-copy `resource_path(rel)` (`_MEIPASS`) and `app_dir()` bodies.
+- `app-structure`: **Baseline .gitignore** and minimal `requirements.txt` conventions.
+- `code-concurrency`: `threading.Event` stop-event plus queue-based polling in the shape.
+- `code-persistence`: **Atomic save** (`*.tmp` + `os.replace`, with the measured
+  `[WinError 5]` fallback) and `RotatingFileHandler(maxBytes, backupCount=1)`.
+- `code-sync`: explicit timeout (15 s) and bounded retry/backoff (3 tries, 1/2/4 s).
+- `flow-delivery`: `--exclude-module` for unused heavy packages in the one-file build.
+- `flow-levels`: **Pre-flight git status** before a version bump.
+- `ui-dialogs`: monitor-bounds clamping pointer for an unplugged second display.
+- `ui-tray-animation`: 80 ms / 12 FPS floor, stop the animator on idle, frames generated in
+  memory at startup.
+- `win-shell`: **Teardown** section - `UnregisterHotKey` + `CloseHandle` via
+  `atexit`/`try...finally`, on normal and abnormal exit.
+- `skill-authoring`: **Git hooks** section documenting the two tracked hooks.
+
+### Changed
+
+- `flow-levels` lists all six commands (`push` / `push-minor` / `push-master`) with their
+  version bumps, tags and the `benkingjo-ai` remote guard.
+- Rule registry now holds 39 rules.
+
 ## [1.0.1] - 2026-10-08
 
 ### Fixed

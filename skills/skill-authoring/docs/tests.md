@@ -15,8 +15,8 @@ Verdicts below were judged against the descriptions in force when this file was 
 
 | verdict | count |
 |---|---|
-| ok | 58 |
-| RISK | 7 |
+| ok | 57 |
+| RISK | 8 |
 | MISS | 0 |
 
 ## app-identity
@@ -104,7 +104,7 @@ Verdicts below were judged against the descriptions in force when this file was 
 | # | request | expected | near-miss of | verdict |
 |---|---|---|---|---|
 | 1 | Draw the red ✕ close button | trigger | | ok |
-| 2 | Bake the refresh spinner frames | trigger | | ok |
+| 2 | Compose a tray badge in memory from the brand icon | trigger | | ok |
 | 3 | Which Unicode glyph means verified? | trigger | | ok |
 | 4 | What is the accent colour token? | no | ui-layout-theme | ok |
 | 5 | Show a toast when the sync fails | no | win-shell | ok |

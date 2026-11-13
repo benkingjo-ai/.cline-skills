@@ -15,7 +15,7 @@ Every modal dialog is the same window; subclasses set `DIALOG_NAME` and implemen
 - Width = the popup's width, clamped to `POPUP_MIN_WIDTH` .. `work area - 2 x margin`
   (metrics owned by the `ui-layout-theme` skill); placed at the popup's top-right slot, and
   **re-placed after a rotation, DPI or resolution change** rather than left off-screen
-  (owner: the `win-shell` skill).
+  (owner: the `win-shell` skill; an unplugged second monitor cannot strand it).
 - **Header**: app icon + `"<App> – <Dialog>"` + red ✕; **draggable** by the header.
 - **Esc** cancels; ✕ cancels; `grab_set()` for modality.
 - Deliberately **not** `wm_transient` — Windows hides a transient whose owner is
