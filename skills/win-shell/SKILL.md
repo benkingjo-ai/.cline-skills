@@ -18,8 +18,8 @@ description: Use ONLY for a Windows GUI or system-tray desktop app: tray states,
 
 ## 2. Global hotkey — **Alt+Q**
 
-`RegisterHotKey` **only**. There is no `WH_KEYBOARD_LL` hook: a global low-level keyboard
-hook is the keylogger signature an endpoint product scores, and this app never needs one.
+`RegisterHotKey` **only** — no `WH_KEYBOARD_LL` hook: a global low-level hook is the
+keylogger signature an endpoint product scores.
 
 | Step | Call | Notes |
 |---|---|---|
@@ -28,8 +28,8 @@ hook is the keylogger signature an endpoint product scores, and this app never n
 | Handle | `WM_HOTKEY` on that thread | sets a flag the GUI pump reads — the handler never touches the toolkit |
 
 - **A lost registration is never silent**: `ERROR_HOTKEY_ALREADY_REGISTERED` (another
-  process owns the chord) or a failed re-arm is reported in the tray menu and the log, so a
-  dead shortcut is visible instead of unexplained.
+  process owns the chord) or a failed re-arm is reported in the tray menu and the log, so
+  a dead shortcut is visible.
 - `active` must check the **thread is alive and the last register succeeded** — Windows
   silently drops a registration across sleep/resume.
 
@@ -60,10 +60,9 @@ def acquire_single_instance() -> bool:
 2. `register()` → write `DisplayName` + `IconUri` under
    `HKCU\Software\Classes\AppUserModelId\<AUMID>` — idempotent, by value.
 3. `stable_icon_path()` copies the `.ico` into `%APPDATA%` **only** when the build unpacks
-   to a temporary folder (a released one-file build always does); it is the **one** self-copy
-   the app makes - written only when the file is missing or stale, never on every launch - and
-   a machine that refuses that filename is reported instead of fought (the fallback rule is
-   owned by the `code-persistence` skill).
+   to a temporary folder (a released one-file build always does) - the **one** self-copy the
+   app makes, written only when the file is missing or stale; a machine that refuses that
+   filename is reported instead of fought (fallback: `code-persistence`).
 4. Send the toast through the same AUMID with a `ToastGeneric` XML payload.
 5. `init_apartment()` once per process (STA, fall back to MTA) before the first WinRT call.
 6. **Best-effort and quiet**: a failure logs `[APPID] …` and never stops the app starting

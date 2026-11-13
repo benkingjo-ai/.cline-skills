@@ -14,15 +14,13 @@ description: Use ONLY for a Windows GUI or system-tray desktop app: buttons, ico
 | Primary | `FlatButton(primary=True)` | `PRIMARY` (see `ui-layout-theme`) — used by **Add** / **Load** / **Confirm** |
 | Dialog actions | Cancel / Confirm, right-aligned, Confirm is default | min width 90 px |
 
-Rule: Add and Cancel are built with the same width and padding, so the pair always
-aligns.
+Add and Cancel share width and padding, so the pair always aligns.
 
 ## Stock Windows icons (the rule)
 
-Native first. Every icon, badge and glyph is either a Windows stock asset or drawn
-in memory from the brand `.ico`; the only image the project ships is its own brand
-`.ico` (see `win-shell`, *stable_icon_path*). Per-state `.ico` files, `refresh-*.png`
-artwork and `tools/make_icons.py` are retired.
+Every icon, badge and glyph is a Windows stock asset or drawn in memory from the brand
+`.ico` - the only image a project ships (see `win-shell`, *stable_icon_path*). Per-state
+`.ico` files, `refresh-*.png` and `tools/make_icons.py` are retired.
 
 | Stack | Call |
 |---|---|

@@ -65,4 +65,6 @@ SETTINGS_FILE = os.path.join(APP_DIR, "settings.ini")
   is already there.
 - `acquire_single_instance()` — see the win-shell skill.
 
-> Autostart (Task Scheduler ONLOGON task with the HKCU Run-key fallback) is owned by the `win-shell` skill, which covers all Windows shell integration. It moved there so this file stays about identity and paths.
+> Autostart (Task Scheduler ONLOGON task with the HKCU Run-key fallback) is owned by
+> `win-shell`, which covers all Windows shell integration; this file stays about identity
+> and paths.

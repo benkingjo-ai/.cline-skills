@@ -19,11 +19,10 @@ description: House conventions for docs, tests, tools and packaging: README link
 | `docs/RELEASE-x.y.z.md` | artefact checksum, restore recipes, everything deliberately outside Git |
 | `docs/Code.gs` | the Apps Script to paste into the sheet (see `code-sync`) |
 
-Skills never live in a project: a skill belongs in the global library (see the `skill-authoring`
-skill). Do not keep a `*.skill` bundle, a `SKILL.md` or a `references/` folder under `docs/`.
+A skill belongs in the global library (see `skill-authoring`), never in a project: no
+`*.skill` bundle, `SKILL.md` or `references/` under `docs/`.
 
-Voice: describe **behaviour and the reason for it**; cite the spec/manual section it comes
-from (e.g. *"manual 11.1"*, *"Sheets spec 14.3"*).
+Voice: describe **behaviour and why**; cite the manual/spec section it comes from.
 
 ## 2. Testing
 
