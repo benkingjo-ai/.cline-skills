@@ -39,6 +39,26 @@ All notable changes to this skills library. Format: keep-a-changelog. The versio
   version bumps, tags and the `benkingjo-ai` remote guard.
 - Rule registry now holds 39 rules.
 
+## [2.1.0] - 2026-11-13
+
+### Added
+
+- Token optimisation: SKILL.md files rewritten to dense telegraphic bullets/tables
+  (ui-tray-animation 2022 to 1114, flow-levels 1600 to 1470, skill-authoring 1405 to 1379,
+  ui-layout-theme 1076 to 1045, code-concurrency 640 to 628).
+- Trigger scoping: `Use ONLY ...` description prefixes on ui-layout-theme, ui-assets,
+  ui-dialogs, ui-tray-animation, win-shell and code-sync.
+- Project profiles in `app-structure`: Profile A (GUI desktop app, full stack) vs Profile B
+  (CLI / automation script / library: skip ui-* and win-shell).
+- Skill rules: native-only ui-assets, 8-12 FPS and idle stop in ui-tray-animation,
+  deterministic win-shell teardown, atomic settings.ini save, RotatingFileHandler,
+  PyInstaller --noupx / --exclude-module, safe-push pre-flight.
+- `snippet.md` merged into this entry, then deleted.
+
+### Changed
+
+- VERSION 2.0.0 to 2.1.0 (minor: new feature set, backwards compatible).
+- Always-on token budget 747 to 738.
 ## [1.0.1] - 2026-10-08
 
 ### Fixed
