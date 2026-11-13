@@ -64,3 +64,14 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
   (e.g. `popup_timers.py`) rather than allowed to sprawl.
 - **Constants never scattered** — a magic number belongs in `config.py`/`theme.py`.
 - **Packages import from the package** (`from camonitor.config import …`), not relatively.
+
+## Project profiles
+
+- **Profile A - Standard desktop GUI app (default):** the full stack applies - app-identity,
+  app-structure, the ui-* skills, win-shell, code-concurrency, code-persistence, flow-*.
+- **Profile B - CLI / automation script / library:** no GUI entry point, or the user says
+  CLI/script/tool. **Skip ui-* and win-shell entirely**; enforce only app-identity,
+  code-persistence (when stateful) and flow-*. The ui-* and win-shell descriptions say
+  "Use ONLY for a Windows GUI...", which is how Profile B skips them.
+- **code-sync** applies only when docs/Code.gs exists or sync is requested.
+- **Ask once** when the profile is not obvious from the code; otherwise assume A.
