@@ -55,6 +55,11 @@ SETTINGS_FILE = os.path.join(APP_DIR, "settings.ini")
 - `app_dir()` — `os.path.join(os.environ.get("APPDATA", tempfile.gettempdir()), APP_ID)`;
   `makedirs(..., exist_ok=True)`; created on first use.
 - `icon_path(name)` — `resource_path()` for `ICON_DIR_NAME` / `ICON_ICO_NAME`.
+- `get_resource_path(rel)` — compact 3-line alias of `resource_path()`:
+  `os.path.join(getattr(sys, "_MEIPASS", PROJECT_ROOT), rel)`.
+- `get_appdata_dir()` — compact 3-line alias of `app_dir()`:
+  `os.path.join(os.environ.get("APPDATA", tempfile.gettempdir()), APP_ID)`;
+  created with `makedirs(..., exist_ok=True)` on first use.
 - `migrate_legacy()` — copy (never move) an old brand's files into `APP_DIR`, leaving a
   `migrated_from_<id>.txt` marker so it runs once per brand; never overwrite a file that
   is already there.

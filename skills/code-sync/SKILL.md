@@ -33,8 +33,8 @@ client  ──POST {token, values}──►  deployed Apps Script web app (/exec
 | `settings.ini` | holds `sync_url`, `sync_token`, `user` in `%APPDATA%` |
 | Credentials | parsed by the credentials parser owned by the `code-persistence` skill; recognised fields include `$url`, `$token`, `$api`, `$user` |
 | **Login** panel | the panel protocol owned by the `ui-dialogs` skill. `Load` the file → validate all-or-nothing → test connection → report field **names** → auto-close after `LOGIN_CLOSE_S` (owned by the `ui-dialogs` skill) |
-| HTTP calls | every `Code.gs` request carries an explicit `timeout` (15 s) and bounded retry/backoff |
-| | (3 tries, 1/2/4 s); transient network drops are retried, never silently swallowed |
+| HTTP calls | every `Code.gs` request uses `requests.post(..., timeout=(5, 15))`, bounded retry/backoff |
+| | (3 tries, 1/2/4 s); transient drops are retried, never swallowed |
 | Offline | without credentials nothing is fetched and nothing is announced |
 | Errors | one toast per outage and one per recovery; a second failure inside the same outage only reaches the log |
 

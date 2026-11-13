@@ -35,9 +35,10 @@ artwork and `tools/make_icons.py` are retired.
 
 ## Glyphs and fonts
 
-- `Segoe Fluent Icons` → `Segoe MDL2 Assets` → `Segoe UI Symbol` (first installed
-  font wins).
-- `\u2715` close ✕, `\u2713` verified ✓, `\u21BB` refresh ↻, `\u25B2`/`\u25BD` up/down.
+- `Segoe Fluent Icons` → `Segoe MDL2 Assets` → `Segoe UI Symbol` → `Calibri` (first
+  installed font wins).
+- Glyphs: `\u2715` close ✕, `\u2713` verified ✓, `\u21BB` refresh ↻, `\u25cf` badge dot,
+  `\u25B2`/`\u25BD` up/down.
 
 ## Tray icons
 

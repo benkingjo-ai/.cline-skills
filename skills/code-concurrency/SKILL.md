@@ -26,7 +26,7 @@ poll with after()/QTimer  except: self._result = (False, str(exc))
 |---|---|
 | 1 | Work runs on `threading.Thread(target=work, daemon=True)` — never on the GUI thread; share `stop_event = threading.Event()` so the GUI can cancel. |
 | 2 | The worker **only records its result**; it never touches a widget, never calls Tk/Qt. |
-| 3 | The GUI polls (`after(...)` in Tk, `QTimer` in Qt) and is the only place widgets change. |
+| 3 | The GUI polls a `queue.Queue` (`after(...)` in Tk, `QTimer` in Qt) and is the only place widgets change. |
 | 4 | Init the result to `None` before starting; the worker must always set it (catch every exception) so the poller can never spin forever. |
 | 5 | A single-winner poller: stop the timer the moment the result lands. |
 | 6 | **Bound every call** — explicit timeout and a retry cap, so a black-holed connection can't hang or bill. |

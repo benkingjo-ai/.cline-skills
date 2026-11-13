@@ -104,6 +104,7 @@ The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per 
   push another branch. With no upstream, or a push rejected (auth, non-fast-forward), **stop and
   report** - do not force.
 - No build or package: no PyInstaller, no `build.ps1`, no `dist/`.
-- **Pre-flight git status**: run `git status --porcelain` before the bump. Untracked
-  scratch/debug artefacts (`.md`, `.tmp`, `.log`, `.bak`) are named and left out of the
-  commit — never swept in by `git add -A`.
+- **Pre-flight git status (F):** run `git status --porcelain` *and* `git diff --stat` before the
+  bump; abort on untracked temp/debug artefacts (named and left out), on secrets (scan
+  `docs/`, `tools/`, `*.ini` for `password`/`token` literals), or on a failing suite —
+  never push a red tree.

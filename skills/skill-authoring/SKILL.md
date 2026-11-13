@@ -67,7 +67,9 @@ naming anything; `scripts/check-skills.ps1` enforces the list.
 
 ## Content
 
-- Keep SKILL.md under about 5,000 tokens, most important information first. Move long or
+- Keep SKILL.md under about 5,000 tokens, most important information first.
+- **Telegraphic style:** bullets and tables, no filler sentences, no repeated rationale;
+  keep every number, path and API name; compress a file before adding a rule. Move long or
   situational detail to `docs\*.md` and link it with relative paths. Only link to files
   that exist.
 - Imperative, unambiguous steps: concrete paths, commands, examples. No vague wording.

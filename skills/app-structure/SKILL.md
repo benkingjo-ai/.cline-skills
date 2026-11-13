@@ -15,7 +15,7 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
 | `README.md` | product doc entry point | links to `docs/<App>.md` or `docs/ARCHITECTURE.md` |
 | `CHANGELOG.md` | keep-a-changelog | version lives in `config.py` |
 | `requirements.txt` | pip deps | one line per dependency; no version pins unless a wheel forces otherwise |
-| `.gitignore` | baseline | `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.mypy_cache/`, `build/`, `dist/`, `build/*.spec`, `*.ini`, `*.log`, `desktop.ini` |
+| `.gitignore` | baseline | `__pycache__/`, `*.pyc`, `.pytest_cache/`, `.mypy_cache/`, `build/`, `dist/`, `build/*.spec`, `settings.ini`, `*.ini`, `*.log`, `desktop.ini` |
 | `run_app.py` | launch from source | Parleyra uses `main.py`; packages use `__main__.py` |
 | `<App>.spec` | PyInstaller spec | one-file |
 | `build.ps1` / `run.cmd` | build/run script | |
