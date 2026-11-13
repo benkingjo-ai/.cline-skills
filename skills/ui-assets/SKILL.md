@@ -1,6 +1,6 @@
 ---
 name: ui-assets
-description: Build buttons, icons and tray artwork from Windows stock assets and in-memory compositing: stock icons, Segoe glyph fonts and the standard Unicode glyphs. Use when drawing buttons, icons or spinners.
+description: Use ONLY for a Windows GUI or system-tray desktop app: buttons, icons and tray badges from native stock assets and in-memory compositing — Segoe glyph chain with Unicode escapes. When drawing buttons, icons or spinners.
 ---
 
 # Assets — Buttons, Icons, Symbols

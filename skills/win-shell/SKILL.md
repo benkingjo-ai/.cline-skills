@@ -1,6 +1,6 @@
 ---
 name: win-shell
-description: Integrate with the Windows shell: tray icon states, Alt+Q hotkey with a re-arm watchdog, single-instance mutex, AUMID toasts, autostart, borderless tool windows. Use when adding tray behaviour, global shortcuts, toasts or autostart.
+description: Use ONLY for a Windows GUI or system-tray desktop app: tray states, Alt+Q via RegisterHotKey, re-armed by watchdog, single-instance mutex, AUMID toasts, autostart, borderless windows. When adding tray integration or shortcuts.
 ---
 
 # Win32 Shell

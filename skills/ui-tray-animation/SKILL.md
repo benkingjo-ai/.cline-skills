@@ -1,6 +1,6 @@
 ---
 name: ui-tray-animation
-description: Animate a tray or menu-bar icon while background work runs: idle/busy/ok/error states with a spinning badge, a success check and a sticky error mark. Use when a tray icon must spin while syncing, loading or uploading.
+description: Use ONLY for a Windows GUI or system-tray desktop app: animate the tray icon (idle/busy/ok/error) at 8-12 FPS, stop on idle, frames drawn in memory. When a tray icon must spin while syncing, loading or uploading.
 ---
 
 # Animated Tray Icons

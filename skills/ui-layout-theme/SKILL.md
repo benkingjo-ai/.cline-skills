@@ -1,6 +1,6 @@
 ---
 name: ui-layout-theme
-description: Apply the house dark theme in theme.py: colour palette, Calibri fonts, layout metrics (padding, button widths, header heights, alpha), plus the popup minimum width and rotation/DPI clamping. Use when styling a window or panel.
+description: Use ONLY for a Windows GUI or system-tray desktop app: dark palette (BG..HL), Calibri fonts, layout metrics (padding, header heights, alpha, popup min width, DPI clamp) in theme.py or constants.py. When styling a window or panel.
 ---
 
 # Layout — Colour, Font, Size

@@ -1,6 +1,6 @@
 ---
 name: ui-dialogs
-description: Build the borderless dialog shell, the Login panel protocol and auto-hide: always-on-top windows, red ✕ header, Esc cancels, a status line per part, connection test, 3-second auto-close. Use when creating a dialog or login panel.
+description: Use ONLY for a Windows GUI or system-tray desktop app: borderless dialog shell, Login panel protocol, auto-hide, Esc to close, monitor work-area clamping. When creating a dialog or login panel.
 ---
 
 # Dialogs — Shell, Login, Auto-hide

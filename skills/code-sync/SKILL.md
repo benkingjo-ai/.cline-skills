@@ -1,6 +1,6 @@
 ---
 name: code-sync
-description: Implement the cloud-sync contract: an Apps Script /exec web app with a constant-time token check and a script lock, one row per setting, last-write-wins. Use when adding cloud sync, a shared Sheet or cross-machine settings.
+description: Use ONLY when integrating a Google Apps Script (Code.gs) backend: /exec contract, constant-time token check, script lock, one row per setting, timeout and retry. When adding cloud sync or cross-machine settings.
 ---
 
 # Sync Backend
