@@ -6,8 +6,7 @@ description: Use ONLY for a Windows GUI or system-tray desktop app: dark palette
 # Layout — Colour, Font, Size
 
 The palette and fonts are **byte-identical** across CAMonitor, GlobalX and VerbaPro.
-VerbaPro's `theme.py` carries the comment *"CAMonitor's dialog colours, so the Login
-panel matches"*. Copy them verbatim; centralise them in `theme.py` (or `config.py`).
+Copy them verbatim; centralise them in `theme.py` (or `config.py`).
 
 ## Colour tokens
 
@@ -60,9 +59,9 @@ panel matches"*. Copy them verbatim; centralise them in `theme.py` (or `config.p
 | `BAR_HEIGHT` / `BAR_BORDER` / `BAR_MIN_WIDTH` | 13 / 1 / 60 px |
 | `LOGIN_CLOSE_S` | 3 s | login auto-close delay, owned by the `ui-dialogs` skill |
 
-Size ownership: the `ICON_BTN` / `REFRESH_BTN` values above are the button *boxes*. The
-refresh *glyph* inside is derived by the `ui-assets` skill (icon size x 0.85, so
-`BAR_ICON_PX` 22 gives 19 px). This file owns the boxes; `ui-assets` owns the glyph.
+Size ownership: `ICON_BTN` / `REFRESH_BTN` above are the button *boxes*; the refresh
+glyph inside is derived by `ui-assets` (icon size x 0.85, so `BAR_ICON_PX` 22 gives
+19 px). This file owns the boxes, `ui-assets` owns the glyph.
 
 ## Screen rotation & scaling
 

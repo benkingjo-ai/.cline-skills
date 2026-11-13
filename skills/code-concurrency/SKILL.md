@@ -18,7 +18,8 @@ poll with after()/QTimer  except: self._result = (False, str(exc))
        collect + repaint
 ```
 
-> Ownership: the thread/poll/timer rules below are defined once, here. The `ui-dialogs` and `code-sync` skills link back to this file instead of restating them.
+**Ownership:** the thread/poll/timer rules are defined once here; `code-sync` and
+`ui-dialogs` link back instead of restating them.
 
 ## Rules
 
@@ -46,5 +47,5 @@ poll with after()/QTimer  except: self._result = (False, str(exc))
 
 ## Logging from threads
 
-The file logger appends a line and rotates — safe enough to call from any thread; the
-GUI work, however, must still wait for the poller.
+The file logger appends a line and rotates — safe from any thread; the GUI still waits
+for the poller.

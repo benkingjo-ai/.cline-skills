@@ -21,15 +21,14 @@ Governs the skills library. Read this before touching any file under the skills 
 
 ## Layout
 
-    skills\
-    └── <skill-name>\
-        ├── SKILL.md          # REQUIRED, exact filename, uppercase
-        ├── docs\             # OPTIONAL: long or situational detail
-        │   └── details.md
-        └── scripts\          # OPTIONAL: helper scripts the instructions call
+- skills/
+  - <skill-name>/
+    - SKILL.md          # REQUIRED, exact filename, uppercase
+    - docs/             # OPTIONAL: long or situational detail
+    - scripts/          # OPTIONAL: helper scripts the instructions call
 
-- One skill per folder. Folder name is lowercase-with-hyphens, no spaces, and must
-  equal the `name` field.
+- One skill per folder: lowercase-with-hyphens, no spaces; the folder name must equal the
+  `name` field.
 
 Deciding whether text belongs in a global rule, a SKILL.md or a `docs/` file: see
 [`docs/where-it-goes.md`](docs/where-it-goes.md).
@@ -37,8 +36,7 @@ Deciding whether text belongs in a global rule, a SKILL.md or a `docs/` file: se
 ## Naming convention
 
 Every skill is named `<category>-<topic>`: lowercase, hyphens only, no spaces, 2 to 4
-words, and the folder name must equal the `name` field. The topic must say what the skill
-is for, so single generic words are not names.
+words. The topic must say what the skill is for, so single generic words are not names.
 
 The approved category prefixes live in [`docs/naming.md`](docs/naming.md). Read it before
 naming anything; `scripts/check-skills.ps1` enforces the list.
@@ -48,9 +46,9 @@ naming anything; `scripts/check-skills.ps1` enforces the list.
 1. Pick the category and topic from [`docs/naming.md`](docs/naming.md) **before** writing
    anything. Reject a name that is a single generic word, joins three topics, or uses a
    prefix that is not on the approved list.
-2. Create `skills\<category>-<topic>\SKILL.md` with the frontmatter above.
+2. Create `skills/<category>-<topic>/SKILL.md` with the frontmatter above.
 3. Write `description` first: WHAT it does, WHEN to use it, in the words I would type.
-4. Put long or situational detail in `docs\`, helper scripts in `scripts\`.
+4. Put long or situational detail in `docs/`, helper scripts in `scripts/`.
 5. Run [`scripts/check-skills.ps1`](scripts/check-skills.ps1) and satisfy the Completion
    gate.
 

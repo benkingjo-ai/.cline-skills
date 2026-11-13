@@ -5,16 +5,14 @@ description: House work commands, one per request: code edit (default), clean up
 
 # Workflow Commands
 
-**One command per request, and only the steps that command lists.** The command comes from the
-typed word (`code edit`, `clean up`, `build`, `push`) and from nothing else - not from what the
-task seems to need.
+**One command per request, only the steps the named command lists.** The command comes from the
+typed word (`code edit`, `clean up`, `build`, `push`) and from nothing else.
 
-- Do **only** the steps of the named command. A step that belongs to another command is **not**
-  performed and **not** asked about: name it in one line at the end and stop.
-- Never mix two commands in one pass, and never continue "helpfully" into the next step.
-- Never ask whether to run another command. You name the next one when you want it.
-- Stop-and-report - never a question - only for: a red test run, a change unrelated to the
-  task, a rejected push, or a step this command requires that cannot be completed.
+- Do **only** the steps of the named command. A step of another command is **not** performed and
+  **not** asked about: name it in one line and stop.
+- Never ask whether to run another command: name the next one when you want it.
+- Stop-and-report only for: a red test run, an unrelated change, a rejected push, or a required
+  step that cannot be completed.
 
 ## The four commands (and their two version variants)
 
@@ -47,8 +45,8 @@ and named in one line - never asked about.
 
 ## Version bumps
 
-The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per release in
-`CHANGELOG.md` (keep-a-changelog; the format is owned by the `flow-delivery` skill).
+`VERSION` (`X.Y.Z`, one place) is bumped by the command and recorded per release in
+`CHANGELOG.md` (keep-a-changelog; format owned by `flow-delivery`).
 
 | Command | Bump | Example |
 |---|---|---|
@@ -56,34 +54,32 @@ The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per 
 | `push-minor` | minor | 1.0.1 -> 1.1.0 |
 | `push-master` | major | 1.1.0 -> 2.0.0 |
 
-- Read `VERSION`, bump the component the command names, and write it back **before** the docs
-  step, so the changelog entry and the commit subject (`release vX.Y.Z: <summary>`) carry the
-  new number.
+- Bump `VERSION` before the docs step so the changelog entry and the commit subject
+  (`release vX.Y.Z: <summary>`) carry the new number.
 - Tag the release commit `vX.Y.Z`. No release branches: the tag and the push go to the current
   branch and its upstream.
 
 ## What each command adds
 
 **code edit - A**
-- The **smallest correct change, scoped to the code the user pointed at**. No drive-by refactors.
-- Tests: run **only** the ones that cover the edited code, and report the result.
-- No docs, no build, no commit: leave the working tree dirty and name whatever is left.
+- The **smallest correct change**, scoped to the code the user pointed at. No drive-by refactors.
+- Tests: run **only** the ones covering the edited code; report the result.
+- No docs, no build, no commit: leave the tree dirty; name whatever remains.
 
 **clean up - B, C**
-- Profile before changing anything: no speculative rewrites. Behaviour must stay identical - the
-  full suite is the proof.
+- Profile first: no speculative rewrites; behaviour must stay identical (the full suite is the
+  proof).
 - Dead code: unused imports, unreachable branches, leftover debug hooks.
-- Clear the cache set **last** - deleted, never committed - and never right after a build: it
-  holds `build/` and `dist/`.
-- Stop and report if the suite fails after an optimisation, or if an optimisation would change
+- Clear the cache set **last** - deleted, never committed - never right after a build.
+- Stop and report if the suite fails after an optimisation, or an optimisation would change
   observable behaviour.
 
 **build - C, D**
-- The full suite runs **before** the build: never package a red tree.
-- **One-file only** (owner: `flow-delivery`): a single `<App>.exe` in `dist/`. Never `--onedir`,
-  a folder release or a `.zip` of a folder - a one-folder build is a diagnostic at most.
-- Do **not** hand-type the version in two places (see the `app-identity` skill). If the message
-  carries a version - `/build 1.4.2` or just a number - use it for the build.
+- Full suite **before** the build: never package a red tree.
+- **One-file only** (owner `flow-delivery`): a single `<App>.exe` in `dist/`; never `--onedir` or
+  a folder release.
+- Do **not** hand-type the version in two places (see `app-identity`). If the message carries a
+  version - `/build 1.4.2` or a number - build that.
 - No docs, commit or push here.
 - End with the artefacts (the `.exe` path under `dist/`, plus the version used).
 
@@ -105,6 +101,5 @@ The library version lives in `VERSION` (one place, `X.Y.Z`) and is recorded per 
   report** - do not force.
 - No build or package: no PyInstaller, no `build.ps1`, no `dist/`.
 - **Pre-flight git status (F):** run `git status --porcelain` *and* `git diff --stat` before the
-  bump; abort on untracked temp/debug artefacts (named and left out), on secrets (scan
-  `docs/`, `tools/`, `*.ini` for `password`/`token` literals), or on a failing suite —
-  never push a red tree.
+  bump; abort on untracked temp/debug artefacts (named, left out), secrets (`docs/`, `tools/`,
+  `*.ini`), or a failing suite — never push a red tree.
