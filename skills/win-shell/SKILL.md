@@ -7,7 +7,8 @@ description: Use ONLY for a Windows GUI or system-tray desktop app: tray states,
 
 ## 1. System tray
 
-- One icon, three states: `idle`, `busy`, `error` (icons `tray-sleep.ico` / `tray-sync.ico` / `tray-error.ico` as shipped; see the `ui-assets` skill). State colours are the palette tokens `DIM` / `OK` / `ERROR` (values owned by the `ui-layout-theme` skill).
+- One icon, four states: `idle`, `busy`, `ok`, `error`. Colours: palette tokens `DIM` / `OK` /
+  `ERROR` (`ui-layout-theme`); badge art is composited from the brand `.ico` (`ui-assets`).
 - State colours come from the palette; badge = tinted glyph on a dark disc
   (see `ui-assets`).
 - Update the shell **only when the state actually changes**.

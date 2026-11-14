@@ -65,10 +65,9 @@ glyph inside is derived by `ui-assets` (icon size x 0.85, so `BAR_ICON_PX` 22 gi
 
 ## Screen rotation & scaling
 
-The panel is **placed from the live work area, never from a cached rectangle**: a rotation
-(portrait to landscape), a resolution change, a DPI change or a moved taskbar invalidates both
-the tray rect and the work rect. The reaction is owned by the `win-shell` skill
-(*Display change*); the values below are owned here.
+The panel is placed from the **live work area, never a cached rectangle**: rotation,
+resolution change, DPI change or a moved taskbar invalidates both the tray and work rect.
+Reaction: `win-shell` (*Display change*); the values below are owned here.
 
 | Token | Value | Rule |
 |---|---|---|
@@ -83,8 +82,7 @@ the tray rect and the work rect. The reaction is owned by the `win-shell` skill
 
 ## Code
 
-Tk — put colours, fonts and metrics in `theme.py` (or `constants.py`) and read them
-everywhere:
+Tk: colours, fonts and metrics in `theme.py` (or `constants.py`), read everywhere:
 
 ```python
 BG    = "#121212"
@@ -99,8 +97,7 @@ FONT_TINY  = (FONT_FAMILY, 7)
 
 ## Rules
 
-- **One place for colour** — a theme tweak is a single edit, not a hunt.
-- Palette must be readable on a dark desktop; the overlay additionally samples screen
-  luminance to pick light/dark text.
-- Bars use **cell grids** (24 cells for hours, 10 cells = 10% for quotas), not smooth
-  fills.
+- **One place for colour** — a theme tweak is a single edit.
+- Palette readable on a dark desktop; the overlay samples screen luminance to pick light/dark
+  text.
+- Bars use **cell grids** (24 cells for hours, 10 cells = 10% for quotas), not smooth fills.

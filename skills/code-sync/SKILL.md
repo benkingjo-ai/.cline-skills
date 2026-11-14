@@ -21,8 +21,8 @@ client  ──POST {token, values}──►  deployed Apps Script web app (/exec
 - **Deployed web app URL only** — a `/dev` or Library link is rejected; the validator
   matches `^https://script.google.com/(a/macros/[^/]+/s/|macros/s/)[A-Za-z0-9_-]{10,}/exec$`.
 - Token checked in **constant time**; `setup()` mints it once.
-- **Merge rule: last write wins per setting** — a PC that only moved one slider cannot
-  undo a watchlist edit made elsewhere.
+- **Merge rule: last write wins per setting** — one slider move cannot undo a watchlist
+  edit made elsewhere.
 - Reads and writes happen on the background worker; the GUI never blocks (see
   `code-concurrency`).
 
@@ -42,5 +42,4 @@ client  ──POST {token, values}──►  deployed Apps Script web app (/exec
 
 - Ship `docs/Code.gs` in the repo — the exact script to paste into a live sheet.
 - Document the transport version (e.g. *contract v3*) and the columns it uses.
-- The transport never stores secrets in the repo or logs them; percentages / counters are
-  not secrets, tokens are.
+- Never store or log secrets; percentages and counters are not secrets, tokens are.

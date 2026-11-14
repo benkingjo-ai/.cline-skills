@@ -9,10 +9,9 @@ Governs the skills library. Read this before touching any file under the skills 
 
 ## Priority
 
-- This skill has priority over every other skill whenever any file in the skills folder
-  is touched. If another skill's instructions conflict with the format rules here,
-  follow this skill.
-- Load this skill **before** making any change in the skills folder.
+- Highest priority whenever any file in the skills folder is touched; another skill's
+  conflicting instructions yield to the format rules here.
+- Load this skill **before** any change in the skills folder.
 
 ## Voice
 
@@ -103,20 +102,18 @@ duplicate is actually found; decide by token cost, not tidiness.
 
 A skill change is **not** complete until all of these are done and reported:
 
-1. Ran [`scripts/check-skills.ps1`](scripts/check-skills.ps1) and pasted its output; every
-   skill shows `OK` (or the listed exceptions were approved).
-2. The Token budget report shows no warnings, or I have approved the exceptions.
-3. The `=== Naming ===` section reports no violations: every name is `<category>-<topic>`
-   with an approved prefix, 2 to 4 words, and equals its folder.
-4. Every remaining duplicate is marked intentional with a reason, or has a named owner and a
-   rule applied to it.
-5. The description-overlap section shows `none` for the changed skill, or the overlaps are
-   explained.
-6. Checked the changed rules against the other skills for conflicting values (naming, paths,
-   colours, formats) and named one owner skill for each rule.
+1. Ran `check-skills.ps1` and pasted its output; every skill shows `OK` (or an approved
+   exception).
+2. Token budget: no warnings, or approved exceptions.
+3. `=== Naming ===`: no violations - `<category>-<topic>`, approved prefix, 2-4 words,
+   matches the folder.
+4. Every duplicate is marked intentional with a reason, or has an owner and a rule.
+5. Description overlap shows `none` for the changed skill, or the overlaps are explained.
+6. Changed rules checked against other skills for conflicting values (naming, paths,
+   colours, formats); one owner per rule.
 7. Confirmed every link to a `docs\` or `scripts\` file resolves, and SKILL.md is under
    about 5k tokens.
-8. Gave a short change summary (what changed, which files) and the audit result.
+8. Short change summary (what changed, which files) and the audit result.
 
-If any item fails, fix it and re-run the audit. Do not report the task as done until the
-gate passes.
+If an item fails, fix it and re-run the audit; do not call the task done until the gate
+passes.

@@ -36,8 +36,8 @@ Log with `[SECTION] message` tags (`[LOGIN]`, `[SETTINGS]`, `[POPUP]`, `[HOOK]`,
 ## 2. `settings.ini`
 
 - `%APPDATA%\<APP_ID>\settings.ini` — **never** in the program folder (OneDrive) - see the `app-identity` skill.
-- `configparser`, one section (e.g. `[sync]`); read legacy sections if the app was
-  rebranded, but only ever write your own.
+- `configparser`, one section (e.g. `[sync]`); read legacy sections if rebranded, write
+  only your own.
 - `save()` **merges** — keys the caller didn't mention are preserved.
 - `get()` falls back to environment variables (`APP_URL`, `APP_TOKEN`, `API_KEY` …).
 - `describe()` returns **which** fields are set — names only.
@@ -64,8 +64,8 @@ Accept whatever the user wrote down — **read only, never move/change/copy**:
    `ya29.` OAuth, long hex) + `looks_like_placeholder()` keep specs' samples out of the way.
 3. Reuse them in `tests/test_secrets.py` (nothing in the repo may match) and
    `tools/release_check.py` (nothing inside the built exe may match).
-4. Plain-text storage is an accepted, documented level of protection — say so in the
-   settings docstring.
+4. Plain-text storage is an accepted, documented protection — state it in the settings
+   docstring.
 
 ## 5. Refused filenames
 

@@ -63,34 +63,31 @@ and named in one line - never asked about.
 
 **code edit - A**
 - The **smallest correct change**, scoped to the code the user pointed at. No drive-by refactors.
-- Tests: run **only** the ones covering the edited code; report the result.
-- No docs, no build, no commit: leave the tree dirty; name whatever remains.
+- Tests: run **only** the covering tests; report the result.
+- No docs, build or commit; leave the tree dirty; name what remains.
 
 **clean up - B, C**
 - Profile first: no speculative rewrites; behaviour must stay identical (the full suite is the
   proof).
 - Dead code: unused imports, unreachable branches, leftover debug hooks.
 - Clear the cache set **last** - deleted, never committed - never right after a build.
-- Stop and report if the suite fails after an optimisation, or an optimisation would change
-  observable behaviour.
+- Stop and report if the suite fails, or a change would alter observable behaviour.
 
 **build - C, D**
 - Full suite **before** the build: never package a red tree.
 - **One-file only** (owner `flow-delivery`): a single `<App>.exe` in `dist/`; never `--onedir` or
   a folder release.
-- Do **not** hand-type the version in two places (see `app-identity`). If the message carries a
-  version - `/build 1.4.2` or a number - build that.
+- Do **not** hand-type the version twice (`app-identity`); a version in the message
+  (`/build 1.4.2`) is used for the build.
 - No docs, commit or push here.
 - End with the artefacts (the `.exe` path under `dist/`, plus the version used).
 
 **push / push-minor / push-master - C, E, F**
-- **Remote first**: check the push URL with `git remote get-url --push <remote>` (normally
-  `origin`) before anything else. It must be the **`benkingjo-ai`** account; a missing or
-  foreign remote is a stop-and-report
-  case - never push anywhere else. The `pre-push` hook enforces the same rule, so a manual
-  `git push` is blocked too (owner: `skill-authoring`, *Push remote guard*).
-- The full suite runs **before** the commit: **stop and report if anything fails** - never commit
-  or push a red build.
+- **Remote first**: `git remote get-url --push <remote>` (normally `origin`) — must be the
+  **`benkingjo-ai`** account; missing or foreign = stop-and-report. The `pre-push` hook
+  enforces the same, so a manual `git push` elsewhere is blocked too (`skill-authoring`,
+  *Push remote guard*).
+- Full suite **before** the commit: stop on anything failing — never commit or push a red build.
 - Bump `VERSION` by the component the command names (patch / minor / major), then write the
   `CHANGELOG.md` entry for it - see *Version bumps*.
 - Run C, E and F in order **without asking** - F is part of the command, not optional, so never

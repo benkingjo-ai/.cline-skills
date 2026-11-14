@@ -60,8 +60,8 @@ Follow this layout for every new project. It is common to **CAMonitor**, **Globa
 ## Rules
 
 - **Baseline .gitignore** — the excludes in the table above; copy them into every new project.
-- **One concern per module**; a module that grows unreadable is split into mixins
-  (e.g. `popup_timers.py`) rather than allowed to sprawl.
+- **One concern per module**; split an unreadable module into mixins (`popup_timers.py`)
+  rather than letting it sprawl.
 - **Constants never scattered** — a magic number belongs in `config.py`/`theme.py`.
 - **Packages import from the package** (`from camonitor.config import …`), not relatively.
 

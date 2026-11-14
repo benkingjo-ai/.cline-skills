@@ -43,10 +43,11 @@ All notable changes to this skills library. Format: keep-a-changelog. The versio
 
 ### Added
 
-- Token optimisation: SKILL.md files rewritten to dense telegraphic bullets/tables
-  (ui-tray-animation 2022 to 1114, flow-levels 1600 to 1470, skill-authoring 1405 to 1379,
-  ui-layout-theme 1076 to 1045, code-concurrency 640 to 628; follow-up trims: win-shell 1315
-  to 1280, app-identity 829 to 823, ui-assets 656 to 636, flow-delivery 939 to 913).
+- Token optimisation: SKILL.md files rewritten to telegraphic bullets/tables - 13 734 to
+  12 657 tokens (ui-tray-animation 2022 to 1114, flow-levels 1600 to 1420, skill-authoring
+  1405 to 1312, win-shell 1315 to 1263, code-persistence 1137 to 1130, ui-layout-theme 1076
+  to 1015, ui-dialogs 940 to 902, flow-delivery 939 to 913, app-identity 829 to 823, ui-assets
+  656 to 636, code-concurrency 640 to 628, code-sync 542 to 530).
 - Trigger scoping: `Use ONLY ...` description prefixes on ui-layout-theme, ui-assets,
   ui-dialogs, ui-tray-animation, win-shell and code-sync.
 - Project profiles in `app-structure`: Profile A (GUI desktop app, full stack) vs Profile B

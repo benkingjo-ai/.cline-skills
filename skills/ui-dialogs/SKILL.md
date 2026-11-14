@@ -18,12 +18,13 @@ Every modal dialog is the same window; subclasses set `DIALOG_NAME` and implemen
   (owner: the `win-shell` skill; an unplugged second monitor cannot strand it).
 - **Header**: app icon + `"<App> – <Dialog>"` + red ✕; **draggable** by the header.
 - **Esc** cancels; ✕ cancels; `grab_set()` for modality.
-- Deliberately **not** `wm_transient` — Windows hides a transient whose owner is
-  invisible; `-topmost` keeps it up instead.
+- Not `wm_transient` — Windows hides a transient whose owner is invisible; `-topmost`
+  keeps it up.
 - **Overlap rule**: a foreign window overlapping the panel closes/cancels it at once.
   `pause_overlap()`/`resume_overlap()` (or `child_window()`) while opening a file picker,
   so our own child never counts as an intruder.
-- **Teardown**: stop every timer in `done()`/`_close()` (the timer-lifetime rule is owned by the `code-concurrency` skill) — no timer outlives the window.
+- **Teardown**: stop every timer in `done()`/`_close()` (`code-concurrency` owns the rule) —
+  no timer outlives the window.
 
 ## 2. The Login panel protocol
 
@@ -39,7 +40,7 @@ toolkit."*
 | Verified | `"<part>: verified ✓"` in `OK`; failure in `ERROR` |
 | File picker | points at the first `<App>.*` file, else the first `.txt` holding credentials |
 | Validation | **all-or-nothing** — one bad value refuses the whole file, nothing written |
-| Connection test | runs on a **background thread**; GUI polls the result (the thread/poll pattern is owned by the `code-concurrency` skill) |
+| Connection test | runs on a **background thread**; GUI polls the result (thread/poll: `code-concurrency`) |
 | **Auto-close** | verified panel closes itself after `LOGIN_CLOSE_S = 3 s` (keeps the result); a failed one **stays** so the reason can be read |
 | Esc / ✕ | cancel (does not report a cancel if the load already succeeded) |
 | Security | never show or log secret values (the secret-hygiene rule is owned by the `code-persistence` skill) — only field names |
@@ -55,8 +56,7 @@ toolkit."*
 
 Rules:
 
-- Re-arm the timer on activity; **throttle** re-arming (≤4×/s — `<Motion>` fires per
-  pixel and each re-arm is several Tcl round-trips).
+- Re-arm on activity; **throttle** (≤4×/s — `<Motion>` fires per pixel).
 - Pointer over the window ⇒ timer off; `timeout_s <= 0` ⇒ arm nothing.
 - **One choice, two surfaces**: the panel's right-click menu *and* the tray's
   **Auto-hide ▸** submenu share the same list and the same saved choice.
